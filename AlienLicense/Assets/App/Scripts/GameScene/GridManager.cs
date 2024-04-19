@@ -36,9 +36,9 @@ namespace App.Scripts.GameScene
                     GameObject gridObj = Instantiate(gridPrefab, gridPosition, Quaternion.identity);
                     gridObj.transform.parent = transform;
 
-                    int randomIndex = Random.Range(0, items.Length);
+                    /*int randomIndex = Random.Range(0, items.Length);
                     GameObject item = Instantiate(items[randomIndex], gridPosition, Quaternion.identity);
-                    item.transform.parent = gridObj.transform;
+                    item.transform.parent = gridObj.transform;*/
                 }
             }
             OnGridGenerated?.Invoke(gridSize);

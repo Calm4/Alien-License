@@ -21,11 +21,11 @@ namespace App.Scripts.GameScene
                 return;
             }
 
-            // Вычисляем центр сетки
             float centerX = gridManager.transform.position.x + gridSize.x / 2.0f;
             float centerZ = gridManager.transform.position.z + gridSize.y / 2.0f;
 
-            // Устанавливаем позицию камеры в центре сетки
+            cameraOffsetY = Mathf.Sqrt(gridSize.x * gridSize.y);
+            Debug.Log(cameraOffsetY);
             mainCamera.transform.position = new Vector3(centerX, gridManager.transform.position.y + cameraOffsetY, centerZ);
         }
 
