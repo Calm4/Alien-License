@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace App.Scripts.GameScene
 {
     public class GridManager : MonoBehaviour
     {
-        [SerializeField] private GameObject gridPrefab;
+        [SerializeField] private GameObject defaultGridPrefab;
+        [SerializeField] private GameObject exitGridPrefab;
         [SerializeField] private GameObject wallPrefab;
         [SerializeField] private GameObject windowPrefab;
         [SerializeField] Vector2Int gridSize;
@@ -27,7 +27,7 @@ namespace App.Scripts.GameScene
 
         private void RoomParametersSetup()
         {
-            _gridInitialPosition = new Vector3(0.5f, gridPrefab.transform.position.y, 0.5f);
+            _gridInitialPosition = new Vector3(0.5f, defaultGridPrefab.transform.position.y, 0.5f);
             _wallOffsetY = wallPrefab.transform.localScale.y / 2;
             _windowOffsetY = windowPrefab.transform.localScale.y / 2;
         }
@@ -58,7 +58,16 @@ namespace App.Scripts.GameScene
                     else
                     {
                         Vector3 gridPosition = new Vector3(_gridInitialPosition.x + x, _gridInitialPosition.y, _gridInitialPosition.z + z);
-                        GameObject gridObj = Instantiate(gridPrefab, gridPosition, Quaternion.identity);
+                        GameObject gridObj;
+                        // Проверяем, является ли текущая плитка последней
+                        if (x == gridSize.x - 1 && z == gridSize.y - 1)
+                        {
+                            gridObj = Instantiate(exitGridPrefab, gridPosition, Quaternion.identity); // otherGridPrefab - это ваш другой префаб
+                        }
+                        else
+                        {
+                            gridObj = Instantiate(defaultGridPrefab, gridPosition, Quaternion.identity);
+                        }
                         gridObj.transform.parent = transform;
                     }
                 }
