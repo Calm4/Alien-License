@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace App.Scripts.GameScene
@@ -12,7 +13,7 @@ namespace App.Scripts.GameScene
         {
             gridManager.OnGridGenerated += SetCameraPosition;
         }
-
+        
         private void SetCameraPosition(Vector2Int gridSize)
         {
             if (!gridManager)
@@ -21,12 +22,13 @@ namespace App.Scripts.GameScene
                 return;
             }
 
-            float centerX = gridManager.transform.position.x + gridSize.x / 2.0f;
-            float centerZ = gridManager.transform.position.z + gridSize.y / 2.0f;
+            float centerX = gridSize.x / 2.0f;
+            float centerZ = -1;
+            float cameraRotateX = 65 - gridSize.y / 3;
 
-            cameraOffsetY = Mathf.Sqrt(gridSize.x * gridSize.y);
-            Debug.Log(cameraOffsetY);
+            cameraOffsetY = Mathf.Sqrt(gridSize.x * gridSize.y) + 2;
             mainCamera.transform.position = new Vector3(centerX, gridManager.transform.position.y + cameraOffsetY, centerZ);
+            mainCamera.transform.rotation = Quaternion.Euler(cameraRotateX, mainCamera.transform.rotation.eulerAngles.y, mainCamera.transform.rotation.eulerAngles.z);
         }
 
     }
