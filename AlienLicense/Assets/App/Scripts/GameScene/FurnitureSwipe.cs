@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class FurnitureSwipe : MonoBehaviour
@@ -18,66 +19,88 @@ public class FurnitureSwipe : MonoBehaviour
 
 
     void Swipe()
+{
+    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        startTouchPosition = Input.GetTouch(0).position;
+        Ray ray = Camera.main.ScreenPointToRay(startTouchPosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
         {
-            startTouchPosition = Input.GetTouch(0).position;
-            Ray ray = Camera.main.ScreenPointToRay(startTouchPosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                selectedObject = hit.collider.gameObject;
-                furnitureColliderSize = selectedObject.GetComponent<BoxCollider>().size;
-            }
+            selectedObject = hit.collider.gameObject;
+            furnitureColliderSize = selectedObject.GetComponent<BoxCollider>().size;
         }
+    }
 
-        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+    if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+    {
+        endTouchPosition = Input.GetTouch(0).position;
+
+        Vector2 inputVector = endTouchPosition - startTouchPosition;
+        Vector3 direction = Vector3.zero;
+
+        if(Mathf.Abs(inputVector.x) > Mathf.Abs(inputVector.y))
         {
-            endTouchPosition = Input.GetTouch(0).position;
-
-            Vector2 inputVector = endTouchPosition - startTouchPosition;
-            if(Mathf.Abs(inputVector.x) > Mathf.Abs(inputVector.y))
+            if(inputVector.x > 0)
             {
-                if(inputVector.x > 0)
-                {
-                    Debug.Log("right");
-                    if (selectedObject != null)
-                    {
-                        selectedObject.transform.position += new Vector3(1f, 0f, 0f);
-                    }
-                }
-                else
-                {
-                    if (selectedObject != null)
-                    {
-                        selectedObject.transform.position += new Vector3(-1f, 0f, 0f);
-                    }
-                    Debug.Log("left");
-                }
+                Debug.Log("right");
+                direction = Vector3.right;
             }
             else
             {
-                if (inputVector.y > 0)
+                Debug.Log("left");
+                direction = Vector3.left;
+            }
+        }
+        else
+        {
+            if (inputVector.y > 0)
+            {
+                Debug.Log("up");
+                direction = Vector3.forward;
+            }
+            else
+            {
+                Debug.Log("down");
+                direction = Vector3.back;
+            }
+        }
+
+        if (selectedObject != null)
+        {
+            RaycastHit boxHit;
+            if (Physics.BoxCast(selectedObject.transform.position, furnitureColliderSize / 2, direction, out boxHit))
+            {
+                Vector3 halfColliderSizeInDirection = Vector3.Scale(furnitureColliderSize / 2, new Vector3(Mathf.Sign(direction.x), Mathf.Sign(direction.y), Mathf.Sign(direction.z)));
+                Vector3 newPosition = boxHit.point - halfColliderSizeInDirection;
+                newPosition.y = selectedObject.transform.position.y;
+    
+                if (direction == Vector3.right || direction == Vector3.left)
                 {
-                    if (selectedObject != null)
-                    {
-                        selectedObject.transform.position += new Vector3(0f, 0f, 1f);
-                    }
-                    Debug.Log("up");
+                    newPosition.z = selectedObject.transform.position.z;
                 }
                 else
                 {
-                    if (selectedObject != null)
-                    {
-                        selectedObject.transform.position += new Vector3(0f, 0f, -1f);
-                    }
-                    Debug.Log("down");
+                    newPosition.x = selectedObject.transform.position.x;
                 }
+                
+                selectedObject.transform.DOMove(newPosition,1f);
             }
-            // Сбрасываем selectedObject после свайпа
-            selectedObject = null;
+
+
+
+            else
+            {
+                
+                selectedObject.transform.position += direction * speed;
+            }
         }
+        
+        selectedObject = null;
     }
+}
+
+
 
 }
 
