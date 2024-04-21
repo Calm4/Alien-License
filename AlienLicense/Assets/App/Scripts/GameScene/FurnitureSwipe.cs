@@ -1,14 +1,14 @@
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class FurnitureSwipe : MonoBehaviour
 {
     private Vector2 _startTouchPosition, _endTouchPosition;
     private Vector3 _moveDirection;
-    [SerializeField] private BoxCollider furnitureCollider;
     [SerializeField] private float speed;
     [SerializeField] private Vector3 furnitureColliderSize;
-    [SerializeField] private GameObject selectedObject;
+    [ShowInInspector] private GameObject selectedObject;
 
     private bool _isMoving = false;
     private const float FurnitureBoxCastOffset = 0.02f;
@@ -71,6 +71,7 @@ public class FurnitureSwipe : MonoBehaviour
             return inputVector.y > 0 ? Vector3.forward : Vector3.back;
         }
     }
+    
     void MoveSelectedObject(Vector3 direction)
     {
         Vector3 boxSize = furnitureColliderSize / 2;
