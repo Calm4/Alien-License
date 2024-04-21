@@ -9,22 +9,26 @@ public class FurnitureSwipe : MonoBehaviour
     [SerializeField] private BoxCollider furnitureCollider;
     [SerializeField] private float speed;
     [SerializeField] private Vector3 furnitureColliderSize;
-
-    private void Start()
-    {
-        furnitureColliderSize = furnitureCollider.size;
-    }
+    [SerializeField] private GameObject selectedObject;
 
     void Update()
     {
         Swipe();
     }
 
+
     void Swipe()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             startTouchPosition = Input.GetTouch(0).position;
+            Ray ray = Camera.main.ScreenPointToRay(startTouchPosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                selectedObject = hit.collider.gameObject;
+                furnitureColliderSize = selectedObject.GetComponent<BoxCollider>().size;
+            }
         }
 
         if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -36,13 +40,18 @@ public class FurnitureSwipe : MonoBehaviour
             {
                 if(inputVector.x > 0)
                 {
-                    
                     Debug.Log("right");
-                    transform.position += new Vector3(1f, 0f, 0f);
+                    if (selectedObject != null)
+                    {
+                        selectedObject.transform.position += new Vector3(1f, 0f, 0f);
+                    }
                 }
                 else
                 {
-                    transform.position += new Vector3(-1f, 0f, 0f);
+                    if (selectedObject != null)
+                    {
+                        selectedObject.transform.position += new Vector3(-1f, 0f, 0f);
+                    }
                     Debug.Log("left");
                 }
             }
@@ -50,15 +59,23 @@ public class FurnitureSwipe : MonoBehaviour
             {
                 if (inputVector.y > 0)
                 {
-                    transform.position += new Vector3(0f, 0f, 1f);
+                    if (selectedObject != null)
+                    {
+                        selectedObject.transform.position += new Vector3(0f, 0f, 1f);
+                    }
                     Debug.Log("up");
                 }
                 else
                 {
-                    transform.position += new Vector3(0f, 0f, -1f);
+                    if (selectedObject != null)
+                    {
+                        selectedObject.transform.position += new Vector3(0f, 0f, -1f);
+                    }
                     Debug.Log("down");
                 }
             }
+            // Сбрасываем selectedObject после свайпа
+            selectedObject = null;
         }
     }
 

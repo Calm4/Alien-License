@@ -853,6 +853,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93460998}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &111023972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 111023974}
+  - component: {fileID: 111023973}
+  m_Layer: 0
+  m_Name: SwipeSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &111023973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111023972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e56e267c7d0694dbfcb8b3e2059926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  furnitureCollider: {fileID: 1698674251}
+  speed: 1
+  furnitureColliderSize: {x: 0, y: 0, z: 0}
+  selectedObject: {fileID: 0}
+--- !u!4 &111023974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111023972}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.2333462, y: -0.9374032, z: 6.574259}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &123255574
 GameObject:
   m_ObjectHideFlags: 0
@@ -8136,31 +8184,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694382644}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1698674250 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2413111851279017904, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
-  m_PrefabInstance: {fileID: 8939073284764538266}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1698674251 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 5168642389663003518, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
   m_PrefabInstance: {fileID: 8939073284764538266}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1698674253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698674250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83e56e267c7d0694dbfcb8b3e2059926, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  furnitureCollider: {fileID: 1698674251}
-  speed: 1
-  furnitureColliderSize: {x: 0, y: 0, z: 0}
 --- !u!1 &1707264618
 GameObject:
   m_ObjectHideFlags: 0
@@ -10593,10 +10621,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2413111851279017904, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1698674253}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
 --- !u!1001 &8959330500602760992
 PrefabInstance:
@@ -10672,3 +10697,4 @@ SceneRoots:
   - {fileID: 356621777}
   - {fileID: 1430020217}
   - {fileID: 2114983267}
+  - {fileID: 111023974}
