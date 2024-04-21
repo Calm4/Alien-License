@@ -97,7 +97,7 @@ public class FurnitureSwipe : MonoBehaviour
 
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.gameObject == selectedObject)
+                if (hit.collider.gameObject == selectedObject || hit.collider.isTrigger)
                 {
                     continue;
                 }
@@ -115,7 +115,7 @@ public class FurnitureSwipe : MonoBehaviour
                 }
             }
 
-            if (closestHit.collider != null)
+            if (closestHit.collider != null )
             {
                 Debug.Log("Collision detected with " + closestHit.collider.name);
                 Debug.Log("distance to obstacle: " + minDistance);
@@ -132,6 +132,7 @@ public class FurnitureSwipe : MonoBehaviour
         {
             selectedObject.transform.DOMove(selectedObject.transform.position + direction * speed, 1f)
                 .OnComplete(() => _isMoving = false);
+            Debug.Log("fblf");
         }
     }
 }
