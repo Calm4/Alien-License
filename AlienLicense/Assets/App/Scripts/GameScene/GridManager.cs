@@ -22,7 +22,7 @@ namespace App.Scripts.GameScene
     
         void Start()
         {
-            GenerateGrid();
+           // GenerateGrid();
         }
 
         private void RoomParametersSetup()
@@ -59,10 +59,9 @@ namespace App.Scripts.GameScene
                     {
                         Vector3 gridPosition = new Vector3(_gridInitialPosition.x + x, _gridInitialPosition.y, _gridInitialPosition.z + z);
                         GameObject gridObj;
-                        // Проверяем, является ли текущая плитка последней
                         if (x == gridSize.x - 1 && z == gridSize.y - 1)
                         {
-                            gridObj = Instantiate(exitGridPrefab, gridPosition, Quaternion.identity); // otherGridPrefab - это ваш другой префаб
+                            gridObj = Instantiate(exitGridPrefab, gridPosition, Quaternion.identity); 
                         }
                         else
                         {
