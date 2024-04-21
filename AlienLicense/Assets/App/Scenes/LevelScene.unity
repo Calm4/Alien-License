@@ -2498,6 +2498,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4037323697626635759, guid: 7d8f6e9c14b1c3d4a92b0257dde9ceca, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037323697626635759, guid: 7d8f6e9c14b1c3d4a92b0257dde9ceca, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037323697626635759, guid: 7d8f6e9c14b1c3d4a92b0257dde9ceca, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8482364195730269320, guid: 7d8f6e9c14b1c3d4a92b0257dde9ceca, type: 3}
       propertyPath: m_Name
       value: TableWithAlarmClock1x1
@@ -10435,6 +10447,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5452236490877529734, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452236490877529734, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5452236490877529734, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8001636007508482513, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
       propertyPath: m_Name
       value: Table1x1
@@ -10496,6 +10520,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Table2x1
       objectReference: {fileID: 0}
+    - target: {fileID: 8730611869278166859, guid: 1b01a0a78b8738047bdf503c63b65c2a, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730611869278166859, guid: 1b01a0a78b8738047bdf503c63b65c2a, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730611869278166859, guid: 1b01a0a78b8738047bdf503c63b65c2a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10512,6 +10548,18 @@ PrefabInstance:
     - target: {fileID: 5263518171504701465, guid: abaf4034fb3dd044b922994bc78c6c33, type: 3}
       propertyPath: m_Name
       value: Chair1x1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323973106911765832, guid: abaf4034fb3dd044b922994bc78c6c33, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323973106911765832, guid: abaf4034fb3dd044b922994bc78c6c33, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5323973106911765832, guid: abaf4034fb3dd044b922994bc78c6c33, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7304015732991426481, guid: abaf4034fb3dd044b922994bc78c6c33, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10617,6 +10665,10 @@ PrefabInstance:
     - target: {fileID: 5168642389663003518, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
       propertyPath: m_Size.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168642389663003518, guid: 5b1f744f3e5a77e43838c4f81d1296c3, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

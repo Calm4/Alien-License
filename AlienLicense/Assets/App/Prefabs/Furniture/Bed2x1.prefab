@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7532961635675852684}
   - component: {fileID: 7134841671973828475}
+  - component: {fileID: 5454666316724645602}
   m_Layer: 0
   m_Name: Bed2x1
   m_TagString: Untagged
@@ -59,6 +60,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 1}
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!114 &5454666316724645602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983597500244712788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8e39871c231c8a4c93b6e71ee005489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2829370542350630871
 GameObject:
   m_ObjectHideFlags: 0

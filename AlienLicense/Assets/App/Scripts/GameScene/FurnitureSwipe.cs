@@ -1,107 +1,107 @@
-using System;
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
 public class FurnitureSwipe : MonoBehaviour
 {
-    private Vector2 startTouchPosition, endTouchPosition;
-    private Vector3 moveDirection;
+    private Vector2 _startTouchPosition, _endTouchPosition;
+    private Vector3 _moveDirection;
     [SerializeField] private BoxCollider furnitureCollider;
     [SerializeField] private float speed;
     [SerializeField] private Vector3 furnitureColliderSize;
     [SerializeField] private GameObject selectedObject;
+
+    private bool _isMoving = false;
+    private const float FurnitureBoxCastOffset = 0.02f;
 
     void Update()
     {
         Swipe();
     }
 
-
     void Swipe()
-{
-    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
     {
-        startTouchPosition = Input.GetTouch(0).position;
-        Ray ray = Camera.main.ScreenPointToRay(startTouchPosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Input.touchCount <= 0 || _isMoving) return;
+
+        Touch touch = Input.GetTouch(0);
+        if (touch.phase == TouchPhase.Began)
         {
-            selectedObject = hit.collider.gameObject;
-            furnitureColliderSize = selectedObject.GetComponent<BoxCollider>().size;
+            HandleTouchBegan(touch.position);
+        }
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            HandleTouchEnded(touch.position);
         }
     }
-
-    if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
+    
+    void HandleTouchBegan(Vector2 touchPosition)
     {
-        endTouchPosition = Input.GetTouch(0).position;
-
-        Vector2 inputVector = endTouchPosition - startTouchPosition;
-        Vector3 direction = Vector3.zero;
-
-        if(Mathf.Abs(inputVector.x) > Mathf.Abs(inputVector.y))
+        _startTouchPosition = touchPosition;
+        Ray ray = Camera.main.ScreenPointToRay(_startTouchPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if(inputVector.x > 0)
+            IMovable movableObject = hit.collider.gameObject.GetComponent<IMovable>();
+            if (movableObject != null)
             {
-                Debug.Log("right");
-                direction = Vector3.right;
-            }
-            else
-            {
-                Debug.Log("left");
-                direction = Vector3.left;
+                selectedObject = hit.collider.gameObject;
+                furnitureColliderSize = movableObject.GetBoxCollider().size;
             }
         }
-        else
-        {
-            if (inputVector.y > 0)
-            {
-                Debug.Log("up");
-                direction = Vector3.forward;
-            }
-            else
-            {
-                Debug.Log("down");
-                direction = Vector3.back;
-            }
-        }
+    }
+    void HandleTouchEnded(Vector2 touchPosition)
+    {
+        _endTouchPosition = touchPosition;
+        Vector2 inputVector = _endTouchPosition - _startTouchPosition;
+        Vector3 direction = DetermineDirection(inputVector);
 
         if (selectedObject != null)
         {
-            RaycastHit boxHit;
-            if (Physics.BoxCast(selectedObject.transform.position, furnitureColliderSize / 2, direction, out boxHit))
-            {
-                Vector3 halfColliderSizeInDirection = Vector3.Scale(furnitureColliderSize / 2, new Vector3(Mathf.Sign(direction.x), Mathf.Sign(direction.y), Mathf.Sign(direction.z)));
-                Vector3 newPosition = boxHit.point - halfColliderSizeInDirection;
-                newPosition.y = selectedObject.transform.position.y;
-    
-                if (direction == Vector3.right || direction == Vector3.left)
-                {
-                    newPosition.z = selectedObject.transform.position.z;
-                }
-                else
-                {
-                    newPosition.x = selectedObject.transform.position.x;
-                }
-                
-                selectedObject.transform.DOMove(newPosition,1f);
-            }
-
-
-
-            else
-            {
-                
-                selectedObject.transform.position += direction * speed;
-            }
+            MoveSelectedObject(direction);
         }
-        
+
         selectedObject = null;
     }
+    Vector3 DetermineDirection(Vector2 inputVector)
+    {
+        if (Mathf.Abs(inputVector.x) > Mathf.Abs(inputVector.y))
+        {
+            return inputVector.x > 0 ? Vector3.right : Vector3.left;
+        }
+        else
+        {
+            return inputVector.y > 0 ? Vector3.forward : Vector3.back;
+        }
+    }
+    void MoveSelectedObject(Vector3 direction)
+    {
+        Vector3 boxSize = furnitureColliderSize / 2;
+        if (direction == Vector3.forward || direction == Vector3.back)
+        {
+            boxSize.x -= FurnitureBoxCastOffset;
+        }
+        else if (direction == Vector3.right || direction == Vector3.left)
+        {
+            boxSize.z -= FurnitureBoxCastOffset;
+        }
+        
+        _isMoving = true;
+        while (speed > 0)
+        {
+            if (Physics.BoxCast(selectedObject.transform.position, boxSize, direction, out RaycastHit hit,
+                    Quaternion.identity))
+            {
+                float distanceToObstacle = hit.distance;
+                Debug.Log("Collision detected with " + hit.collider.name);
+                selectedObject.transform.DOMove(
+                        selectedObject.transform.position + direction * distanceToObstacle, 1f)
+                    .OnComplete(() => _isMoving = false);
+                break;
+            }
+            else
+            {
+                selectedObject.transform.DOMove(selectedObject.transform.position + direction * speed, 1f)
+                    .OnComplete(() => _isMoving = false);
+                break;
+            }
+        }
+    }
 }
-
-
-
-}
-
-
