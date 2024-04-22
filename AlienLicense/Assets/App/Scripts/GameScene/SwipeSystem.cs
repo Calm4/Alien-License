@@ -1,4 +1,5 @@
 using System;
+using App.Scripts.GameScene.GameItems;
 using App.Scripts.GameScene.Interfaces;
 using App.Scripts.GameScene.UI;
 using DG.Tweening;
@@ -15,12 +16,12 @@ namespace App.Scripts.GameScene
         [SerializeField] private Vector3 furnitureColliderSize;
         [ShowInInspector] private GameObject _selectedObject;
         [SerializeField] private int levelSwipesCount;
-    
+
         private bool _isMoving;
         private bool _isGamePaused;
-    
-        private const float FurnitureBoxCastOffset = 0.02f;
 
+        private const float FurnitureBoxCastOffset = 0.02f;
+        public event Action OnInteractWithDangerObject;
         public event Action OnLevelSwipesOver;
 
         private void Start()
@@ -42,11 +43,12 @@ namespace App.Scripts.GameScene
         {
             if (_isGamePaused)
                 return;
-        
+
             if (levelSwipesCount <= 0)
             {
                 OnLevelSwipesOver?.Invoke();
             }
+
             if (Input.touchCount <= 0 || _isMoving) return;
 
             Touch touch = Input.GetTouch(0);
@@ -132,7 +134,7 @@ namespace App.Scripts.GameScene
                     Vector3 toHit = hit.transform.position - _selectedObject.transform.position;
                     if (Vector3.Dot(toHit.normalized, direction) < 0)
                     {
-                        continue; 
+                        continue;
                     }
 
                     if (hit.distance < minDistance)
@@ -142,12 +144,31 @@ namespace App.Scripts.GameScene
                     }
                 }
 
-                if (closestHit.collider != null )
+                if (closestHit.collider != null)
                 {
                     Debug.Log("Collision detected with " + closestHit.collider.name);
                     Debug.Log("distance to obstacle: " + minDistance);
-                    _selectedObject.transform.DOMove(_selectedObject.transform.position + direction * minDistance, 1f)
-                        .OnComplete(() => _isMoving = false);
+
+                    if (closestHit.collider.gameObject.GetComponent<DangerMovableObject>())
+                    {
+                        // Удариуся 
+                        _selectedObject.transform
+                            .DOMove(_selectedObject.transform.position + direction * minDistance, 1f)
+                            .OnComplete(() =>
+                            {
+                                _isMoving = false;
+                                OnInteractWithDangerObject?.Invoke();
+                                Debug.Log("BOOM");
+                            });
+                        //play alarm clock sound
+                    }
+                    else
+                    {
+                        // Не удариуся
+                        _selectedObject.transform
+                            .DOMove(_selectedObject.transform.position + direction * minDistance, 1f)
+                            .OnComplete(() => _isMoving = false);
+                    }
                 }
                 else
                 {
@@ -159,7 +180,6 @@ namespace App.Scripts.GameScene
             {
                 _selectedObject.transform.DOMove(_selectedObject.transform.position + direction * speed, 1f)
                     .OnComplete(() => _isMoving = false);
-                Debug.Log("fblf");
             }
         }
     }

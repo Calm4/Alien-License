@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class HelpFloorPlate : MonoBehaviour
 {
+    [SerializeField] private float requiredTimeToHelp;
+    [SerializeField] private GameObject UFO;
     private float _timeInHelpZone = 0f;
-    private readonly float requiredTimeToHelp = 2f;
+
     private void OnTriggerStay(Collider other)
     {
         if (other.GetComponent<HelpMovableObject>())
@@ -16,7 +18,8 @@ public class HelpFloorPlate : MonoBehaviour
             _timeInHelpZone += Time.deltaTime;
             if (_timeInHelpZone > requiredTimeToHelp)
             {
-                other.transform.DOScale(0, 1f);
+                other.transform.DOMove(UFO.transform.position, 2f);
+                other.transform.DOScale(0, 2f).OnComplete(() => {Destroy(other.gameObject);});
             }
         }
     }

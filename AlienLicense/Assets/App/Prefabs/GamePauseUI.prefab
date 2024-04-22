@@ -426,7 +426,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2545064405833608209}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -876,7 +876,7 @@ GameObject:
   - component: {fileID: 4049343880000205798}
   - component: {fileID: 3011785335757149368}
   m_Layer: 5
-  m_Name: GamePause
+  m_Name: GamePauseUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -978,7 +978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2a43c3d38485d4a9a3d5cebb756e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gamePauseWindow: {fileID: 549708578516929119}
   gameWindowCanvasGroup: {fileID: 7204064804280017551}
   gameButtonCanvasGroup: {fileID: 7422165165744402241}
   pauseButton: {fileID: 5065790433183124207}
@@ -1206,7 +1205,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7805908604148267435}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

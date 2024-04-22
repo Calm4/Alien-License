@@ -31,16 +31,30 @@ namespace App.Scripts.GameScene.UI
     
         public event Action<bool> OnGamePause;
         private bool _isGamePaused;
-
+        
+        private SwipeSystem _swipeSystem;
+        
         void Start()
         {
+            _swipeSystem = FindObjectOfType<SwipeSystem>();
+            if (_swipeSystem != null)
+            {
+                _swipeSystem.OnInteractWithDangerObject += GameOver;
+            }
+
+            gameObject.SetActive(true);
             ShowPauseMenu(false);
+        }
+
+        private void GameOver()
+        { 
+            gameObject.SetActive(false);
         }
 
         private void ShowPauseMenu(bool isPaused)
         {
-            gameButtonCanvasGroup.alpha = isPaused ? 0f : 1f;
-            gameWindowCanvasGroup.alpha = isPaused ? 1f : 0f;
+            gameButtonCanvasGroup.gameObject.SetActive(!isPaused);
+            gameWindowCanvasGroup.gameObject.SetActive(isPaused);
         }
         public void PauseGame()
         {
