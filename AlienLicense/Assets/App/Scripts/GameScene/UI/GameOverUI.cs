@@ -39,7 +39,7 @@ namespace App.Scripts.GameScene.UI
         private void GameOver()
         {
             gameOverUI.gameObject.SetActive(true);
-            gameOverUI.DOFade(1, 1);
+            gameOverUI.DOFade(1, 2);
             Debug.Log("GameOver");
         }
 

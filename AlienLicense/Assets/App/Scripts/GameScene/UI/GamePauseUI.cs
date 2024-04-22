@@ -43,6 +43,7 @@ namespace App.Scripts.GameScene.UI
             }
 
             gameObject.SetActive(true);
+            gameButtonCanvasGroup.alpha = 1f;
             ShowPauseMenu(false);
         }
 
