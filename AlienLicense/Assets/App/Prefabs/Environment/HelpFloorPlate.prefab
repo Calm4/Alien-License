@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 7352403128456684927}
   - component: {fileID: 6331400262119396483}
   - component: {fileID: 7135304924078799172}
+  - component: {fileID: 336660467196286280}
   m_Layer: 0
   m_Name: HelpFloorPlate
   m_TagString: Untagged
@@ -194,9 +195,21 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 8, z: 1}
+  m_Center: {x: 0, y: 3.5, z: 0}
+--- !u!114 &336660467196286280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8607973502600884302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f3f664ecaa078468a19a7196fe3918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

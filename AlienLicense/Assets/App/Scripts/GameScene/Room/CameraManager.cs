@@ -1,7 +1,6 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace App.Scripts.GameScene
+namespace App.Scripts.GameScene.Room
 {
     public class CameraManager : MonoBehaviour
     {
