@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -9,9 +10,29 @@ public class FurnitureSwipe : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Vector3 furnitureColliderSize;
     [ShowInInspector] private GameObject selectedObject;
-
+    [SerializeField] private int levelSwipesCount;
+    
     private bool _isMoving = false;
+    private bool _isGamePaused = false;
+    
     private const float FurnitureBoxCastOffset = 0.02f;
+
+    public event Action OnLevelSwipesOver;
+
+    private void Awake()
+    {
+        
+    }
+
+    private void Start()
+    {
+        GamePause.Instance.OnGamePause += SetGamePauseState;
+    }
+
+    private void SetGamePauseState(bool isGamePaused)
+    {
+        _isGamePaused = isGamePaused;
+    }
 
     void Update()
     {
@@ -20,6 +41,13 @@ public class FurnitureSwipe : MonoBehaviour
 
     void Swipe()
     {
+        if (_isGamePaused)
+            return;
+        
+        if (levelSwipesCount <= 0)
+        {
+            OnLevelSwipesOver?.Invoke();
+        }
         if (Input.touchCount <= 0 || _isMoving) return;
 
         Touch touch = Input.GetTouch(0);
