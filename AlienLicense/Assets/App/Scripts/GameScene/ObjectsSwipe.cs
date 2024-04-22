@@ -3,7 +3,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class FurnitureSwipe : MonoBehaviour
+public class ObjectsSwipe : MonoBehaviour
 {
     private Vector2 _startTouchPosition, _endTouchPosition;
     private Vector3 _moveDirection;

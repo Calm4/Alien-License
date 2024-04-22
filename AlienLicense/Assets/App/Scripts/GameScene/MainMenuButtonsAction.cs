@@ -12,7 +12,9 @@ public class MainMenuButtonsAction : SerializedMonoBehaviour
     public static MainMenuButtonsAction Instance { get; private set; }
     [SerializeField] private Button playButton;
     [SerializeField] private Button exitButton;
-
+    
+    private const string LevelsListSceneName = "LevelsListScene";
+    
     public event Action OnGameStart;
 
     private void Awake()
@@ -29,7 +31,7 @@ public class MainMenuButtonsAction : SerializedMonoBehaviour
     private void StartGame()
     {
         Debug.Log("StartGame");
-        OnGameStart?.Invoke();
+        SceneManager.LoadScene(LevelsListSceneName);
     }
     private void ExitFromGame()
     {

@@ -1,21 +1,34 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    public static ScenesManager Instance { get; private set; }
     private const string LevelsListSceneName = "LevelsListScene";
     private const string LevelPrefix = "LevelScene_";
 
     private void Awake()
     {
-    }
-
-    private void Start()
-    {
-        GamePause.Instance.OnExitFromLevel += GamePause_ExitFromLevel;
+        Instance = this;
         MainMenuButtonsAction.Instance.OnGameStart += MainMenu_GameStart;
-        LevelsListManager.Instance.OnLoadLevelScene += LevelsList_LoadLevel;
+        
+        if (SceneManager.GetActiveScene().name.StartsWith(LevelPrefix))
+        {
+            GamePause.Instance.OnExitFromLevel += GamePause_ExitFromLevel;
+            Debug.Log("GetActive222");
+        }
+        if (SceneManager.GetActiveScene().name == LevelsListSceneName)
+        {
+            //LevelsListManager.Instance.OnLoadLevelScene += LevelsList_LoadLevel;
+            Debug.Log("GetActive");
+        }
+        else
+        {
+            Debug.Log("Ne eta scena");
+        }
+
         DontDestroyOnLoad(this);
     }
 
@@ -38,6 +51,6 @@ public class ScenesManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        GamePause.Instance.OnExitFromLevel -= GamePause_ExitFromLevel;
+        //GamePause.Instance.OnExitFromLevel -= GamePause_ExitFromLevel;
     }
 }

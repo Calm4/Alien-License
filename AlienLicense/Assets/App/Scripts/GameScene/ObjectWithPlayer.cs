@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FurnitureWithPlayer : MonoBehaviour
+public class ObjectWithPlayer : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {

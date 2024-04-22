@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,60 +8,53 @@ using UnityEngine.UI;
 
 public class LevelsListManager : MonoBehaviour
 {
-    private static LevelsListManager _instance;
-
-    public static LevelsListManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new LevelsListManager();
-            }
-
-            return _instance;
-        }
-    }
-
     [SerializeField] private int levelsCount;
     [SerializeField] private GameObject levelsContainer;
     [SerializeField] private GameObject levelPrefab;
-    private Dictionary<int, Level> _levels;
 
-    private void Awake()
+    private const string LevelPrefix = "LevelScene_";
+    private LevelManager levelManager;
+
+    private void Start()
     {
+        levelManager = FindObjectOfType<LevelManager>(); 
         InitializeLevels();
     }
-    public event Action<int> OnLoadLevelScene;
-
-    [Button]
+    
     private void InitializeLevels()
     {
         ClearLevelsList();
-        for (var i = 0; i < levelsCount; i++)
+        for (var i = 1; i <= levelsCount; i++) 
         {
-            Debug.Log("InitializeLevels: " + levelsCount );
-            Level level = LevelsData.Instance.GetLevel(i);
+            bool isLevelPassed = levelManager.IsLevelPassed(i); 
             GameObject levelUI = Instantiate(levelPrefab, transform.position, Quaternion.identity);
             levelUI.transform.SetParent(levelsContainer.transform);
 
             Button button = levelUI.GetComponentInChildren<Button>();
-            int levelNumber = i + 1;
-            button.onClick.AddListener(() => { OnLoadLevelScene?.Invoke(levelNumber); });
+            int tempLevelNumber = i;
+            button.onClick.AddListener(() => { 
+                Debug.Log("Loading level: " + tempLevelNumber);
+                levelManager.LoadLevel(tempLevelNumber + 1); 
+            });
+
             TMP_Text levelText = button.GetComponentInChildren<TMP_Text>();
-            levelText.text = "Level " + levelNumber;
-            if (level.IsPassed)
-            {
-                
-                levelText.color = Color.green;
-            }
-            else
-            {
-                levelText.color = Color.red;
-            }
+            levelText.text = "Level " + tempLevelNumber; 
+            CheckLevelPass(isLevelPassed, levelText);
         }
     }
 
+
+    private void CheckLevelPass(bool isLevelPassed, TMP_Text levelText)
+    {
+        if (isLevelPassed)
+        {
+            levelText.color = Color.green;
+        }
+        else
+        {
+            levelText.color = Color.red;
+        }
+    }
 
     private void ClearLevelsList()
     {
@@ -77,7 +68,5 @@ public class LevelsListManager : MonoBehaviour
         {
             DestroyImmediate(child);
         }
-
-        _levels = new Dictionary<int, Level>();
     }
 }

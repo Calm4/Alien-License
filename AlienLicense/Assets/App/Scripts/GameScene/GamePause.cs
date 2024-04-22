@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GamePause : MonoBehaviour
@@ -16,7 +13,7 @@ public class GamePause : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = new GamePause();
+                _instance = FindObjectOfType<GamePause>();
             }
             return _instance;
         }
@@ -29,6 +26,8 @@ public class GamePause : MonoBehaviour
     [SerializeField] private Button continueButton;
     [SerializeField] private Button exitButton;
         
+    private const string LevelsListSceneName = "LevelsListScene";
+    
     public event Action<bool> OnGamePause;
     public event Action<bool> OnExitFromLevel;
     private bool _isGamePaused;
@@ -65,5 +64,6 @@ public class GamePause : MonoBehaviour
         Debug.Log("EXIT");
         _isExitFromLevel = true;
         OnExitFromLevel?.Invoke(_isExitFromLevel);
+        SceneManager.LoadScene(LevelsListSceneName);
     }
 }

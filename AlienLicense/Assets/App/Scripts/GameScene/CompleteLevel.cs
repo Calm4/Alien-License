@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class CompleteLevel : MonoBehaviour
 {
     private static CompleteLevel _instance;
+    private LevelManager levelManager;
 
     public static CompleteLevel Instance
     {
@@ -26,7 +27,7 @@ public class CompleteLevel : MonoBehaviour
     private string levelName;
     private const int SceneNameToSubstring = 11; // LevelScene_(название сцены)
     public event Action<int> OnLevelComplete;
-
+    private const string LevelsListSceneName = "LevelsListScene";
 
     private void Awake()
     {
@@ -38,6 +39,8 @@ public class CompleteLevel : MonoBehaviour
         {
             Debug.LogError("There cannot be more than one case of CompleteLevel Instance");
         }
+
+        levelManager = LevelManager.Instance; 
     }
 
 
@@ -56,7 +59,7 @@ public class CompleteLevel : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<FurnitureWithPlayer>())
+        if (other.GetComponent<ObjectWithPlayer>())
         {
             other.transform.DOMove(kidnappingPosition.position, kidnappingDuration);
             other.transform.DOScale(0, kidnappingDuration).OnComplete(() => LevelComplete(other));
@@ -68,7 +71,9 @@ public class CompleteLevel : MonoBehaviour
 
     private void LevelComplete(Collider other)
     {
-        Destroy(other.gameObject);
+        levelManager.MarkLevelAsPassed(_levelID); 
         OnLevelComplete?.Invoke(_levelID);
+        Destroy(other.gameObject);
+        SceneManager.LoadScene(LevelsListSceneName);
     }
 }

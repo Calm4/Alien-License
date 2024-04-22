@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefaultFurnitureObject : MonoBehaviour, IMovable
+public class DefaultMovableObject : MonoBehaviour, IMovable
 {
     private BoxCollider _boxCollider;
 
