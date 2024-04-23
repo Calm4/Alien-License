@@ -11077,9 +11077,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5974976169913370450, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
+      propertyPath: m_fontSize
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974976169913370450, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 5974976169913370450, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6646505255148570652, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
       propertyPath: m_Name
       value: GameOverUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156835550123766590, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156835550123766590, guid: c02b0c5c71091284e8a22a8bbd575850, type: 3}
+      propertyPath: m_Color.r
+      value: 0.84364676
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11454,12 +11474,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3011785335757149368, guid: f872c684224bbae4c87a245259f9532c, type: 3}
+      propertyPath: turnsPanel
+      value: 
+      objectReference: {fileID: 3481681509273926055}
+    - target: {fileID: 3011785335757149368, guid: f872c684224bbae4c87a245259f9532c, type: 3}
       propertyPath: turnsTextField
       value: 
       objectReference: {fileID: 585855743}
     - target: {fileID: 5239191396603589821, guid: f872c684224bbae4c87a245259f9532c, type: 3}
       propertyPath: m_Name
       value: GamePauseUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239191396603589821, guid: f872c684224bbae4c87a245259f9532c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5544223296564233017, guid: f872c684224bbae4c87a245259f9532c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -11490,6 +11518,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f872c684224bbae4c87a245259f9532c, type: 3}
+--- !u!114 &3481681509273926055 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2128133086219223114, guid: f872c684224bbae4c87a245259f9532c, type: 3}
+  m_PrefabInstance: {fileID: 3481681509273926054}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5053098699794391261 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4523154868303227407, guid: a88f0fa725709c746b15469b7021247d, type: 3}

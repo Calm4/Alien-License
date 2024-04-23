@@ -11,14 +11,16 @@ namespace App.Scripts.LevelsListScene
         [SerializeField] private int levelsCount;
         [SerializeField] private GameObject levelsContainer;
         [SerializeField] private GameObject levelPrefab;
+        [SerializeField] private Button backToMainMenu;
 
         private LevelsManager _levelsManager;
-        private readonly int notPlayableScenesCount = 2;
+        private const int NotPlayableScenesCount = 2;
 
         private void Start()
         {
             _levelsManager = FindObjectOfType<LevelsManager>(); 
-            levelsCount = SceneManager.sceneCountInBuildSettings - notPlayableScenesCount;
+            levelsCount = SceneManager.sceneCountInBuildSettings - NotPlayableScenesCount;
+            backToMainMenu.onClick.AddListener(() => { SceneManager.LoadScene("MainMenuScene");});
             InitializeLevels();
         }
     

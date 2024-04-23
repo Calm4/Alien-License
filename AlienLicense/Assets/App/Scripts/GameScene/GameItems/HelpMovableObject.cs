@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class HelpMovableObject : MonoBehaviour
 {
-    
+    public bool IsBeingKidnapped { get; set; }
 }

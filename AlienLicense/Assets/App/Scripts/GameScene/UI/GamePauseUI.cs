@@ -27,6 +27,7 @@ namespace App.Scripts.GameScene.UI
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button exitButton;
+        [SerializeField] private Image turnsPanel;
         [SerializeField] private TMP_Text turnsTextField;
         private const string LevelsListSceneName = "LevelsListScene";
         
@@ -64,6 +65,7 @@ namespace App.Scripts.GameScene.UI
         private void ShowPauseMenu(bool isPaused)
         {
             gameButtonCanvasGroup.gameObject.SetActive(!isPaused);
+            turnsPanel.gameObject.SetActive(!isPaused);
             gameWindowCanvasGroup.gameObject.SetActive(isPaused);
         }
         public void PauseGame()

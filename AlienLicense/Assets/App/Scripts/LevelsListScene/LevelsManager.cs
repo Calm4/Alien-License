@@ -17,8 +17,7 @@ namespace App.Scripts.LevelsListScene
             }
             else
             {
-                Destroy(Instance.gameObject);
-                Instance = this;
+                Destroy(gameObject);
             }
         }
 

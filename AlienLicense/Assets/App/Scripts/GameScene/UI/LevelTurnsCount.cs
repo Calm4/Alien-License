@@ -69,10 +69,9 @@ public class LevelTurnsCount : MonoBehaviour
         turnsCountLeft = turns;
         OnTurnsCountChanged?.Invoke(turnsCountLeft);
     }
-
-    public void LevelTurnsOver()
+    public void CheckLevelEnd()
     {
-        if (turnsCountLeft < 0)
+        if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
         {
             Debug.Log(GetRemainingTurns());
             OnLevelSwipesOver?.Invoke();

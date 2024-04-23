@@ -23,7 +23,7 @@ namespace App.Scripts.GameScene
         private const float FurnitureBoxCastOffset = 0.02f;
 
         private LevelTurnsCount _levelTurnsCount;
-        
+
         public event Action OnInteractWithDangerObject;
 
         private void Start()
@@ -45,6 +45,9 @@ namespace App.Scripts.GameScene
         void Swipe()
         {
             if (_isGamePaused || _isMoving || LevelTurnsCount.Instance.GetRemainingTurns() <= 0) return;
+
+            if (_selectedObject != null && _selectedObject.TryGetComponent(out HelpMovableObject helpMovableObject) &&
+                helpMovableObject.IsBeingKidnapped) return;
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -101,6 +104,35 @@ namespace App.Scripts.GameScene
 
         void MoveSelectedObject(Vector3 direction)
         {
+            Vector3 boxSize = AdjustBoxSizeForDirection(direction);
+            _isMoving = true;
+
+            RaycastHit[] hits = Physics.BoxCastAll(_selectedObject.transform.position, boxSize, direction,
+                Quaternion.identity);
+            if (hits.Length > 0)
+            {
+                RaycastHit closestHit = FindClosestHit(hits, direction);
+
+                if (closestHit.collider != null)
+                {
+                    Debug.Log("Collision detected with " + closestHit.collider.name);
+                    Debug.Log("distance to obstacle: " + closestHit.distance);
+
+                    MoveObjectToClosestHit(closestHit, direction);
+                }
+                else
+                {
+                    MoveObject(_selectedObject.transform.position + direction * speed);
+                }
+            }
+            else
+            {
+                MoveObject(_selectedObject.transform.position + direction * speed);
+            }
+        }
+
+        Vector3 AdjustBoxSizeForDirection(Vector3 direction)
+        {
             Vector3 boxSize = furnitureColliderSize / 2;
             if (direction == Vector3.forward || direction == Vector3.back)
             {
@@ -111,72 +143,66 @@ namespace App.Scripts.GameScene
                 boxSize.z -= FurnitureBoxCastOffset;
             }
 
-            _isMoving = true;
+            return boxSize;
+        }
 
-            RaycastHit[] hits =
-                Physics.BoxCastAll(_selectedObject.transform.position, boxSize, direction, Quaternion.identity);
-            if (hits.Length > 0)
+        RaycastHit FindClosestHit(RaycastHit[] hits, Vector3 direction)
+        {
+            float minDistance = Mathf.Infinity;
+            RaycastHit closestHit = new RaycastHit();
+
+            foreach (RaycastHit hit in hits)
             {
-                float minDistance = Mathf.Infinity;
-                RaycastHit closestHit = new RaycastHit();
-
-                foreach (RaycastHit hit in hits)
+                if (hit.collider.gameObject == _selectedObject || hit.collider.isTrigger)
                 {
-                    if (hit.collider.gameObject == _selectedObject || hit.collider.isTrigger)
-                    {
-                        continue;
-                    }
-
-                    Vector3 toHit = hit.transform.position - _selectedObject.transform.position;
-                    if (Vector3.Dot(toHit.normalized, direction) < 0)
-                    {
-                        continue;
-                    }
-
-                    if (hit.distance < minDistance)
-                    {
-                        minDistance = hit.distance;
-                        closestHit = hit;
-                    }
+                    continue;
                 }
 
-                if (closestHit.collider != null)
+                Vector3 toHit = hit.transform.position - _selectedObject.transform.position;
+                if (Vector3.Dot(toHit.normalized, direction) < 0)
                 {
-                    Debug.Log("Collision detected with " + closestHit.collider.name);
-                    Debug.Log("distance to obstacle: " + minDistance);
+                    continue;
+                }
 
-                    if (closestHit.collider.gameObject.GetComponent<DangerMovableObject>())
-                    {
-                        // Удариуся 
-                        _selectedObject.transform
-                            .DOMove(_selectedObject.transform.position + direction * minDistance, 1f)
-                            .OnComplete(() =>
-                            {
-                                _isMoving = false;
-                                OnInteractWithDangerObject?.Invoke();
-                                Debug.Log("BOOM");
-                            });
-                        //play alarm clock sound
-                    }
-                    else
-                    {
-                        // Не удариуся
-                        _selectedObject.transform
-                            .DOMove(_selectedObject.transform.position + direction * minDistance, 1f)
-                            .OnComplete(() => _isMoving = false);
-                    }
-                }
-                else
+                if (hit.distance < minDistance)
                 {
-                    _selectedObject.transform.DOMove(_selectedObject.transform.position + direction * speed, 1f)
-                        .OnComplete(() => _isMoving = false);
+                    minDistance = hit.distance;
+                    closestHit = hit;
                 }
+            }
+
+            return closestHit;
+        }
+
+        void MoveObjectToClosestHit(RaycastHit closestHit, Vector3 direction)
+        {
+            if (closestHit.collider.gameObject.GetComponent<DangerMovableObject>())
+            {
+                // Удариуся 
+                MoveObject(_selectedObject.transform.position + direction * closestHit.distance, () =>
+                {
+                    _isMoving = false;
+                    
+                    OnInteractWithDangerObject?.Invoke();
+                    Debug.Log("BOOM");
+                });
+                //play alarm clock sound
             }
             else
             {
-                _selectedObject.transform.DOMove(_selectedObject.transform.position + direction * speed, 1f)
-                    .OnComplete(() => _isMoving = false);
+                // Не удариуся
+                MoveObject(_selectedObject.transform.position + direction * closestHit.distance);
             }
+        }
+
+        void MoveObject(Vector3 targetPosition, Action onComplete = null)
+        {
+            _selectedObject.transform.DOMove(targetPosition, 1f)
+                .OnComplete(() =>
+                {
+                    _isMoving = false;
+                    onComplete?.Invoke();
+                });
         }
     }
 }
