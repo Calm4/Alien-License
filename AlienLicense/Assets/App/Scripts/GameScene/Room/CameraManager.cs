@@ -22,7 +22,7 @@ namespace App.Scripts.GameScene.Room
             }
 
             float centerX = gridSize.x / 2.0f;
-            float centerZ = -1;
+            float centerZ = 0;
             float cameraRotateX = 65 - gridSize.y / 3;
 
             cameraOffsetY = Mathf.Sqrt(gridSize.x * gridSize.y) + 2;

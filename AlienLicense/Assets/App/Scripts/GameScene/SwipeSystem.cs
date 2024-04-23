@@ -12,23 +12,18 @@ namespace App.Scripts.GameScene
     {
         private Vector2 _startTouchPosition, _endTouchPosition;
         private Vector3 _moveDirection;
-        [SerializeField] private float speed;
         [SerializeField] private Vector3 furnitureColliderSize;
         [ShowInInspector] private GameObject _selectedObject;
-        [SerializeField] private int levelSwipesCount;
 
         private bool _isMoving;
         private bool _isGamePaused;
 
         private const float FurnitureBoxCastOffset = 0.02f;
 
-        private LevelTurnsCount _levelTurnsCount;
-
         public event Action OnInteractWithDangerObject;
 
         private void Start()
         {
-            _levelTurnsCount = FindObjectOfType<LevelTurnsCount>();
             GamePauseUI.Instance.OnGamePause += SetGamePauseState;
         }
 
@@ -122,12 +117,12 @@ namespace App.Scripts.GameScene
                 }
                 else
                 {
-                    MoveObject(_selectedObject.transform.position + direction * speed);
+                    MoveObject(_selectedObject.transform.position + direction);
                 }
             }
             else
             {
-                MoveObject(_selectedObject.transform.position + direction * speed);
+                MoveObject(_selectedObject.transform.position + direction);
             }
         }
 
@@ -182,11 +177,10 @@ namespace App.Scripts.GameScene
                 MoveObject(_selectedObject.transform.position + direction * closestHit.distance, () =>
                 {
                     _isMoving = false;
-                    
+                    //play alarm clock sound
                     OnInteractWithDangerObject?.Invoke();
                     Debug.Log("BOOM");
                 });
-                //play alarm clock sound
             }
             else
             {

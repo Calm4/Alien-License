@@ -1,8 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class HelpMovableObject : MonoBehaviour
+namespace App.Scripts.GameScene.GameItems
 {
-    public bool IsBeingKidnapped { get; set; }
+    public class HelpMovableObject : MonoBehaviour
+    {
+        public bool IsBeingKidnapped { get; set; }
+    }
 }

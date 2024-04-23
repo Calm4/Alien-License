@@ -38,6 +38,7 @@ namespace App.Scripts.LevelsListScene
                 button.onClick.AddListener(() => { 
                     Debug.Log("Loading level: " + tempLevelNumber);
                     _levelsManager.LoadLevel(tempLevelNumber + 1); 
+                    AudioManager.Instance.PlayBackgroundMusic();
                 });
 
                 TMP_Text levelText = button.GetComponentInChildren<TMP_Text>();
