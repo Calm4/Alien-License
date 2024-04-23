@@ -44,21 +44,18 @@ namespace App.Scripts.GameScene
 
         void Swipe()
         {
-            if (_isGamePaused)
-                return;
+            if (_isGamePaused || _isMoving || LevelTurnsCount.Instance.GetRemainingTurns() <= 0) return;
 
-            if (Input.touchCount <= 0 || _isMoving) return;
-
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
+            if (Input.GetMouseButtonDown(0))
             {
-                HandleTouchBegan(touch.position);
+                HandleTouchBegan(Input.mousePosition);
             }
-            else if (touch.phase == TouchPhase.Ended)
+            else if (Input.GetMouseButtonUp(0))
             {
-                HandleTouchEnded(touch.position);
+                HandleTouchEnded(Input.mousePosition);
             }
         }
+
 
         void HandleTouchBegan(Vector2 touchPosition)
         {

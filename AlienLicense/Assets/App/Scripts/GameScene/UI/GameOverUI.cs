@@ -13,6 +13,7 @@ namespace App.Scripts.GameScene.UI
         [SerializeField] private Button retryButton;
         [SerializeField] private Button backButton;
         private SwipeSystem _swipeSystem;
+        private LevelTurnsCount levelTurnsCount;
         
         
         private const string LevelsListSceneName = "LevelsListScene";
@@ -24,8 +25,13 @@ namespace App.Scripts.GameScene.UI
             {
                 _swipeSystem.OnInteractWithDangerObject += GameOver_HittingDangerObject;
             }
+            levelTurnsCount = FindObjectOfType<LevelTurnsCount>();
+            if (levelTurnsCount != null)
+            {
+                levelTurnsCount = LevelTurnsCount.Instance;
+            }
+            levelTurnsCount.OnLevelSwipesOver += GameOver_TurnsOver;
 
-            LevelTurnsCount.Instance.OnLevelSwipesOver += GameOver_TurnsOver;
             gameOverUI.gameObject.SetActive(false);
         }
 

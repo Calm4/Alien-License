@@ -43,14 +43,15 @@ namespace App.Scripts.GameScene.UI
                 _swipeSystem.OnInteractWithDangerObject += GameOver;
             }
 
-            LevelTurnsCount.Instance.OnTurnsCountChanged += ChangeTurnsCount;
+            LevelTurnsCount.Instance.OnTurnsCountChanged += ChangeTurnsCountUI;
+            LevelTurnsCount.Instance.OnLevelSwipesOver += GameOver;
             turnsTextField.text = LevelTurnsCount.Instance.GetRemainingTurns().ToString();
             gameObject.SetActive(true);
             gameButtonCanvasGroup.alpha = 1f;
             ShowPauseMenu(false);
         }
 
-        private void ChangeTurnsCount(int turnsCount)
+        private void ChangeTurnsCountUI(int turnsCount)
         {
             turnsTextField.text = turnsCount.ToString();
         }

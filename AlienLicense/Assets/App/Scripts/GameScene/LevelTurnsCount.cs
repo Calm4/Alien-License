@@ -32,7 +32,7 @@ public class LevelTurnsCount : MonoBehaviour
     {
         turnsCountLeft -= count;
         OnTurnsCountChanged?.Invoke(turnsCountLeft);
-        if (turnsCountLeft < 0)
+        if (turnsCountLeft <= 0)
         {
             Debug.Log(GetRemainingTurns());
             OnLevelSwipesOver?.Invoke();
