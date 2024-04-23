@@ -1,69 +1,71 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class AudioManager : MonoBehaviour
+namespace App.Scripts.MainMenuScene
 {
-    public static AudioManager Instance;
-
-    [SerializeField]
-    private AudioSource musicAudioSource;
-    [SerializeField]
-    private AudioSource sfxAudioSource;
-
-    [SerializeField] private AudioClip backgroundMusic; 
-    [SerializeField] private AudioClip alarmClockSound; 
-    [SerializeField] private AudioClip NLOSound; 
-    [SerializeField] private AudioClip defeatSound; 
-    [SerializeField] private AudioClip completeSound; 
-
-    void Awake()
+    public class AudioManager : MonoBehaviour
     {
-        if (Instance == null)
+        public static AudioManager Instance;
+
+        [SerializeField]
+        private AudioSource musicAudioSource;
+        [SerializeField]
+        private AudioSource sfxAudioSource;
+
+        [SerializeField] private AudioClip backgroundMusic; 
+        [SerializeField] private AudioClip alarmClockSound; 
+        [SerializeField] private AudioClip NLOSound; 
+        [SerializeField] private AudioClip defeatSound; 
+        [SerializeField] private AudioClip completeSound; 
+
+        void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            PlayBackgroundMusic();
         }
-        else
+
+        public void ButtonClickSound()
         {
-            Destroy(gameObject);
-            return;
+            sfxAudioSource.PlayOneShot(NLOSound);
+        }
+        public void PlayBackgroundMusic()
+        {
+            musicAudioSource.clip = backgroundMusic;
+            musicAudioSource.loop = true;
+            musicAudioSource.Play();
         }
 
-        PlayBackgroundMusic();
-    }
+        public void StopBackgroundMusic()
+        {
+            musicAudioSource.Stop();
+        }
+        public void PlayAlarmClockSound()
+        {
+            sfxAudioSource.PlayOneShot(alarmClockSound);
+        }
 
-    public void ButtonClickSound()
-    {
-        sfxAudioSource.PlayOneShot(NLOSound);
-    }
-    public void PlayBackgroundMusic()
-    {
-        musicAudioSource.clip = backgroundMusic;
-        musicAudioSource.loop = true;
-        musicAudioSource.Play();
-    }
+        public void PlayNLOSound()
+        {
+            sfxAudioSource.PlayOneShot(NLOSound);
+        }
 
-    public void StopBackgroundMusic()
-    {
-        musicAudioSource.Stop();
-    }
-    public void PlayAlarmClockSound()
-    {
-        sfxAudioSource.PlayOneShot(alarmClockSound);
-    }
+        public void PlayDefeatSound()
+        {
+            sfxAudioSource.PlayOneShot(defeatSound);
+        }
 
-    public void PlayNLOSound()
-    {
-        sfxAudioSource.PlayOneShot(NLOSound);
-    }
-
-    public void PlayDefeatSound()
-    {
-        sfxAudioSource.PlayOneShot(defeatSound);
-    }
-
-    public void PlayCompleteSound()
-    {
-        sfxAudioSource.PlayOneShot(completeSound);
+        public void PlayCompleteSound()
+        {
+            sfxAudioSource.PlayOneShot(completeSound);
+        }
     }
 }

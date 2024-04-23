@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace App.Scripts.GameScene
+namespace App.Scripts.GameScene.Room
 {
     public class GridManager : MonoBehaviour
     {
@@ -18,7 +17,7 @@ namespace App.Scripts.GameScene
         private Vector3 _gridInitialPosition;
         private float _wallOffsetY;
         private float _windowOffsetY;
-        public event Action<Vector2Int> OnGridGenerated;
+        
     
         void Start()
         {
@@ -47,11 +46,11 @@ namespace App.Scripts.GameScene
                         if ((x == gridSize.x - 1 && z == gridSize.y) /*|| (x == gridSize.x && z == gridSize.y - 1)*/)
                         {
                             windowPrefab = exitVariants[Random.Range(0, exitVariants.Length)];
-                            wallObj = Instantiate(windowPrefab, wallPosition + new Vector3(0,_windowOffsetY,0), Quaternion.identity); 
+                            wallObj = Instantiate(windowPrefab, wallPosition + Vector3.up * _windowOffsetY, Quaternion.identity); 
                         }
                         else
                         {
-                            wallObj = Instantiate(wallPrefab, wallPosition + new Vector3(0,_wallOffsetY,0), Quaternion.identity);
+                            wallObj = Instantiate(wallPrefab, wallPosition + Vector3.up * _wallOffsetY, Quaternion.identity);
                         }
                         wallObj.transform.parent = transform;
                     }
@@ -71,7 +70,6 @@ namespace App.Scripts.GameScene
                     }
                 }
             }
-            OnGridGenerated?.Invoke(gridSize);
         }
 
         [Button]

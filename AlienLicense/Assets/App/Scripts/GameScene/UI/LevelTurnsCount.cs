@@ -1,80 +1,76 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using App.Scripts.GameScene.Room;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class LevelTurnsCount : MonoBehaviour
+namespace App.Scripts.GameScene.UI
 {
-    private static LevelTurnsCount _instance;
-
-    public static LevelTurnsCount Instance
+    public class LevelTurnsCount : MonoBehaviour
     {
-        get
+        private static LevelTurnsCount _instance;
+
+        public static LevelTurnsCount Instance
         {
-            if (_instance == null)
+            get
             {
-                _instance = FindObjectOfType<LevelTurnsCount>();
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<LevelTurnsCount>();
+                }
+
+                return _instance;
             }
-
-            return _instance;
         }
-    }
 
-    [SerializeField] private int turnsCountLeft;
+        [SerializeField] private int turnsCountLeft;
 
-    public bool isTurnsOver { get; private set; }
+        public event Action<int> OnTurnsCountChanged;
+        public event Action OnLevelSwipesOver;
 
-    public event Action<int> OnTurnsCountChanged;
-    public event Action OnLevelSwipesOver;
-
-    public void ReduceTurns(int count)
-    {
-        turnsCountLeft -= count;
-        OnTurnsCountChanged?.Invoke(turnsCountLeft);
-        if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
+        public void ReduceTurns(int count)
         {
-            Debug.Log(GetRemainingTurns());
-            StartCoroutine(DelayedLevelEnd());
+            turnsCountLeft -= count;
+            OnTurnsCountChanged?.Invoke(turnsCountLeft);
+            if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
+            {
+                Debug.Log(GetRemainingTurns());
+                StartCoroutine(DelayedLevelEnd());
+            }
         }
-    }
 
-    private IEnumerator DelayedLevelEnd()
-    {
-        // если уровень пройден с последнего свайпа, но объект еще не дошел до выхода
-        yield return new WaitForSeconds(3); // костыль конечно, но что уж :/
-        if (!CompleteLevel.Instance.LevelIsComplete())
+        private IEnumerator DelayedLevelEnd()
         {
-            OnLevelSwipesOver?.Invoke();
+            // если уровень пройден с последнего свайпа, но объект еще не дошел до выхода
+            yield return new WaitForSeconds(3); // костыль конечно, но что уж :/
+            if (!CompleteLevel.Instance.LevelIsComplete())
+            {
+                OnLevelSwipesOver?.Invoke();
+            }
         }
-    }
-
-
-
-    public void IncreaseTurns(int count)
-    {
-        // wathing rewards +turns 
-        turnsCountLeft += count;
-        OnTurnsCountChanged?.Invoke(turnsCountLeft);
-    }
-
-    public int GetRemainingTurns()
-    {
-        return turnsCountLeft;
-    }
-
-    public void SetRemainingTurns(int turns)
-    {
-        turnsCountLeft = turns;
-        OnTurnsCountChanged?.Invoke(turnsCountLeft);
-    }
-    public void CheckLevelEnd()
-    {
-        if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
+        public void IncreaseTurns(int count)
         {
-            Debug.Log(GetRemainingTurns());
-            OnLevelSwipesOver?.Invoke();
+            // wathing rewards +turns 
+            turnsCountLeft += count;
+            OnTurnsCountChanged?.Invoke(turnsCountLeft);
+        }
+
+        public int GetRemainingTurns()
+        {
+            return turnsCountLeft;
+        }
+
+        public void SetRemainingTurns(int turns)
+        {
+            turnsCountLeft = turns;
+            OnTurnsCountChanged?.Invoke(turnsCountLeft);
+        }
+        public void CheckLevelEnd()
+        {
+            if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
+            {
+                Debug.Log(GetRemainingTurns());
+                OnLevelSwipesOver?.Invoke();
+            }
         }
     }
 }

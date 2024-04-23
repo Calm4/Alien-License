@@ -21,7 +21,6 @@ namespace App.Scripts.LevelsListScene
             }
         }
 
-
         public void LoadLevel(int levelIndex )
         {
             SceneManager.LoadScene(levelIndex);

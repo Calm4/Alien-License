@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using App.Scripts.MainMenuScene;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,69 +8,64 @@ namespace App.Scripts.LevelsListScene
 {
     public class LevelsListManager : MonoBehaviour
     {
-        [SerializeField] private int levelsCount;
         [SerializeField] private GameObject levelsContainer;
         [SerializeField] private GameObject levelPrefab;
         [SerializeField] private Button backToMainMenu;
+        [SerializeField] private Color levelComplete;
+        [SerializeField] private Color levelNotComplete;
 
         private LevelsManager _levelsManager;
         private const int NotPlayableScenesCount = 2;
+        private int _levelsCount;
 
         private void Start()
         {
             _levelsManager = FindObjectOfType<LevelsManager>(); 
-            levelsCount = SceneManager.sceneCountInBuildSettings - NotPlayableScenesCount;
-            backToMainMenu.onClick.AddListener(() => { SceneManager.LoadScene("MainMenuScene");});
+            _levelsCount = SceneManager.sceneCountInBuildSettings - NotPlayableScenesCount;
+            backToMainMenu.onClick.AddListener(BackToMainMenu);
             InitializeLevels();
+        }
+
+        private void BackToMainMenu()
+        {
+            SceneManager.LoadScene("MainMenuScene");
         }
     
         private void InitializeLevels()
         {
             ClearLevelsList();
-            for (var i = 1; i <= levelsCount; i++) 
+            for (var i = 1; i <= _levelsCount; i++) 
             {
-                bool isLevelPassed = _levelsManager.IsLevelPassed(i); 
-                GameObject levelUI = Instantiate(levelPrefab, transform.position, Quaternion.identity);
-                levelUI.transform.SetParent(levelsContainer.transform);
-
-                Button button = levelUI.GetComponentInChildren<Button>();
-                int tempLevelNumber = i;
-                button.onClick.AddListener(() => { 
-                    Debug.Log("Loading level: " + tempLevelNumber);
-                    _levelsManager.LoadLevel(tempLevelNumber + 1); 
-                    AudioManager.Instance.PlayBackgroundMusic();
-                });
-
-                TMP_Text levelText = button.GetComponentInChildren<TMP_Text>();
-                levelText.text = "Level " + tempLevelNumber; 
-                CheckLevelPass(isLevelPassed, levelText);
+                CreateLevelButton(i);
             }
         }
 
-
-        private void CheckLevelPass(bool isLevelPassed, TMP_Text levelText)
+        private void CreateLevelButton(int levelNumber)
         {
-            if (isLevelPassed)
-            {
-                levelText.color = Color.green;
-            }
-            else
-            {
-                levelText.color = Color.red;
-            }
+            bool isLevelPassed = _levelsManager.IsLevelPassed(levelNumber); 
+            GameObject levelUI = Instantiate(levelPrefab, transform.position, Quaternion.identity);
+            levelUI.transform.SetParent(levelsContainer.transform);
+
+            Button button = levelUI.GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => LoadLevel(levelNumber));
+
+            TMP_Text levelText = button.GetComponentInChildren<TMP_Text>();
+            levelText.text = "Level " + levelNumber; 
+            levelText.color = isLevelPassed ? levelComplete : levelNotComplete;
+        }
+
+        private void LoadLevel(int levelNumber)
+        {
+            Debug.Log("Loading level: " + levelNumber);
+            _levelsManager.LoadLevel(levelNumber + 1); 
+            AudioManager.Instance.PlayBackgroundMusic();
         }
 
         private void ClearLevelsList()
         {
-            List<GameObject> children = new List<GameObject>();
             foreach (Transform child in levelsContainer.transform)
             {
-                children.Add(child.gameObject);
-            }
-
-            foreach (GameObject child in children)
-            {
-                DestroyImmediate(child);
+                DestroyImmediate(child.gameObject);
             }
         }
     }

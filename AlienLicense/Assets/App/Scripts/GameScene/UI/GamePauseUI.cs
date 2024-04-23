@@ -21,7 +21,6 @@ namespace App.Scripts.GameScene.UI
                 return _instance;
             }
         }
-    
         [SerializeField] private CanvasGroup gameWindowCanvasGroup;
         [SerializeField] private CanvasGroup gameButtonCanvasGroup;
         [SerializeField] private Button pauseButton;
@@ -38,20 +37,24 @@ namespace App.Scripts.GameScene.UI
         
         void Start()
         {
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
             _swipeSystem = FindObjectOfType<SwipeSystem>();
             if (_swipeSystem != null)
             {
                 _swipeSystem.OnInteractWithDangerObject += GameOver;
             }
-
             LevelTurnsCount.Instance.OnTurnsCountChanged += ChangeTurnsCountUI;
             LevelTurnsCount.Instance.OnLevelSwipesOver += GameOver;
+
             turnsTextField.text = LevelTurnsCount.Instance.GetRemainingTurns().ToString();
             gameObject.SetActive(true);
             gameButtonCanvasGroup.alpha = 1f;
             ShowPauseMenu(false);
         }
-
         private void ChangeTurnsCountUI(int turnsCount)
         {
             turnsTextField.text = turnsCount.ToString();

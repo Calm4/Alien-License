@@ -1,6 +1,7 @@
 using System;
 using App.Scripts.GameScene.GameItems;
 using App.Scripts.LevelsListScene;
+using App.Scripts.MainMenuScene;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,7 +11,6 @@ namespace App.Scripts.GameScene.Room
     public class CompleteLevel : MonoBehaviour
     {
         private static CompleteLevel _instance;
-
         public static CompleteLevel Instance
         {
             get
@@ -22,32 +22,19 @@ namespace App.Scripts.GameScene.Room
                 return _instance;
             }
         }
-
-        [SerializeField] private BoxCollider exitCollider;
-        [SerializeField] private Transform kidnappingPosition;
-        [SerializeField, Range(0, 5)] private float kidnappingDuration;
         private LevelsManager _levelsManager;
         private int _levelID;
-        private string levelName;
-        private const int SceneNameToSubstring = 11; // LevelScene_(название сцены)
+        private const string LevelScenePrefix = "LevelScene_";
         private const string LevelsListSceneName = "LevelsListScene";
-        public event Action<int> OnLevelComplete;
-        public event Action<bool> OnLevelCompleteAndShowUI;
+
+
+        [SerializeField, Range(0, 5)] private float kidnappingDuration;
+        [SerializeField] private Transform kidnappingPosition;
 
         private void Awake()
         {
-            /*if (!Instance)
-            {
-                // Instance = this;
-            }
-            else
-            {
-                Debug.LogError("There cannot be more than one case of CompleteLevel Instance");
-            }*/
-
             _levelsManager = LevelsManager.Instance; 
         }
-
 
         private void Start()
         {
@@ -56,38 +43,53 @@ namespace App.Scripts.GameScene.Room
 
         private void GetCurrentLevelID()
         {
-            levelName = SceneManager.GetActiveScene().name;
-            string levelNumberString = levelName.Substring(SceneNameToSubstring);
+            string levelName = SceneManager.GetActiveScene().name;
+            string levelNumberString = levelName.Substring(LevelScenePrefix.Length);
+            
             Debug.Log("LevelNumber: " + levelNumberString);
-            _levelID = Int32.Parse(levelNumberString);
+            
+            if (Int32.TryParse(levelNumberString, out int levelID))
+            {
+                _levelID = levelID;
+            }
+            else
+            {
+                Debug.LogError("Unable to parse level ID from scene name.");
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.GetComponent<PlayerMovableObject>())
             {
-                other.transform.DOMove(kidnappingPosition.position, kidnappingDuration);
-                other.transform.DOScale(0, kidnappingDuration).OnComplete(() => LevelComplete(other));
-
-                Debug.Log("Level Complete");
-                Debug.Log(other.gameObject.name);
+                KidnapPlayer(other);
             }
         }
 
-        private void LevelComplete(Collider other)
+        private void KidnapPlayer(Collider player)
+        {
+            player.transform.DOMove(kidnappingPosition.position, kidnappingDuration);
+            player.transform.DOScale(0, kidnappingDuration).OnComplete(() => LevelComplete(player));
+
+            Debug.Log("Level Complete");
+            Debug.Log(player.gameObject.name);
+        }
+
+        private void LevelComplete(Collider player)
         {
             AudioManager.Instance.StopBackgroundMusic();
             AudioManager.Instance.PlayCompleteSound();
+            
             _levelsManager.MarkLevelAsPassed(_levelID); 
-            OnLevelComplete?.Invoke(_levelID);
-            Destroy(other.gameObject);
+            
+            Destroy(player.gameObject);
+            
             SceneManager.LoadScene(LevelsListSceneName);
         }
+
         public bool LevelIsComplete()
         {
             return _levelsManager.IsLevelPassed(_levelID);
         }
-
-
     }
 }

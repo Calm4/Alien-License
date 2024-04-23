@@ -4,9 +4,20 @@ namespace App.Scripts.MainMenuScene
 {
     public class ClearPrefs : MonoBehaviour
     {
-        private void Start()
+        public static ClearPrefs Instance { get; private set; }
+        
+        void Awake()
         {
-            PlayerPrefs.DeleteAll();
+            if (Instance == null)
+            {
+                Instance = this;
+                PlayerPrefs.DeleteAll();
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

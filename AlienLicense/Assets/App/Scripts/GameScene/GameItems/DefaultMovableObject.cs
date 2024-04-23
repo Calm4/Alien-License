@@ -7,7 +7,7 @@ namespace App.Scripts.GameScene.GameItems
     {
         private BoxCollider _boxCollider;
 
-        private void Awake()
+        private void Start()
         {
             _boxCollider = GetComponent<BoxCollider>();
         }

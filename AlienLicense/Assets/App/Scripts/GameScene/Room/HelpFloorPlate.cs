@@ -1,4 +1,5 @@
 using App.Scripts.GameScene.GameItems;
+using App.Scripts.MainMenuScene;
 using DG.Tweening;
 using UnityEngine;
 
@@ -22,8 +23,8 @@ namespace App.Scripts.GameScene.Room
                     other.GetComponent<HelpMovableObject>().IsBeingKidnapped = true;
                     AudioManager.Instance.StopBackgroundMusic();
                     AudioManager.Instance.PlayNLOSound();
-                    other.transform.DOMove(UFO.transform.position, 2f);
-                    UFO.transform.DOMove(UFO.transform.position * 1.5f, 2F);
+                    UFO.transform.DOMove(UFO.transform.position * 1.5f, 1F);
+                    other.transform.DOMove(UFO.transform.position * 2, 2f);
                     other.transform.DOScale(0, 2f).OnComplete(() =>
                     {
                         Destroy(other.gameObject);
