@@ -10,7 +10,6 @@ namespace App.Scripts.GameScene.Room
     public class CompleteLevel : MonoBehaviour
     {
         private static CompleteLevel _instance;
-        private LevelsManager _levelsManager;
 
         public static CompleteLevel Instance
         {
@@ -18,7 +17,7 @@ namespace App.Scripts.GameScene.Room
             {
                 if (_instance == null)
                 {
-                    _instance = new CompleteLevel();
+                    _instance = FindObjectOfType<CompleteLevel>();
                 }
                 return _instance;
             }
@@ -27,22 +26,24 @@ namespace App.Scripts.GameScene.Room
         [SerializeField] private BoxCollider exitCollider;
         [SerializeField] private Transform kidnappingPosition;
         [SerializeField, Range(0, 5)] private float kidnappingDuration;
+        private LevelsManager _levelsManager;
         private int _levelID;
         private string levelName;
         private const int SceneNameToSubstring = 11; // LevelScene_(название сцены)
-        public event Action<int> OnLevelComplete;
         private const string LevelsListSceneName = "LevelsListScene";
+        public event Action<int> OnLevelComplete;
+        public event Action<bool> OnLevelCompleteAndShowUI;
 
         private void Awake()
         {
-            if (!Instance)
+            /*if (!Instance)
             {
                 // Instance = this;
             }
             else
             {
                 Debug.LogError("There cannot be more than one case of CompleteLevel Instance");
-            }
+            }*/
 
             _levelsManager = LevelsManager.Instance; 
         }
@@ -75,10 +76,18 @@ namespace App.Scripts.GameScene.Room
 
         private void LevelComplete(Collider other)
         {
+            AudioManager.Instance.StopBackgroundMusic();
+            AudioManager.Instance.PlayCompleteSound();
             _levelsManager.MarkLevelAsPassed(_levelID); 
             OnLevelComplete?.Invoke(_levelID);
             Destroy(other.gameObject);
             SceneManager.LoadScene(LevelsListSceneName);
         }
+        public bool LevelIsComplete()
+        {
+            return _levelsManager.IsLevelPassed(_levelID);
+        }
+
+
     }
 }

@@ -1,6 +1,5 @@
-using System;
+using App.Scripts.GameScene.Room;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,8 +12,10 @@ namespace App.Scripts.GameScene.UI
         [SerializeField] private Button retryButton;
         [SerializeField] private Button backButton;
         private SwipeSystem _swipeSystem;
-        private LevelTurnsCount levelTurnsCount;
-        
+        private LevelTurnsCount _levelTurnsCount;
+        private CompleteLevel _levelCompete;
+
+        private bool _isLevelCompleted;
         
         private const string LevelsListSceneName = "LevelsListScene";
         
@@ -25,18 +26,35 @@ namespace App.Scripts.GameScene.UI
             {
                 _swipeSystem.OnInteractWithDangerObject += GameOver_HittingDangerObject;
             }
-            levelTurnsCount = FindObjectOfType<LevelTurnsCount>();
-            if (levelTurnsCount != null)
+            _levelTurnsCount = FindObjectOfType<LevelTurnsCount>();
+            if (_levelTurnsCount != null)
             {
-                levelTurnsCount = LevelTurnsCount.Instance;
+                _levelTurnsCount = LevelTurnsCount.Instance;
             }
-            levelTurnsCount.OnLevelSwipesOver += GameOver_TurnsOver;
-
+            _levelTurnsCount.OnLevelSwipesOver += GameOver_TurnsOver;
+            _levelCompete = FindObjectOfType<CompleteLevel>();
+            if (_levelCompete != null)
+            {
+                _levelCompete = CompleteLevel.Instance;
+            }
+            _levelCompete.OnLevelCompleteAndShowUI += SetLevelAsComplete;
+            
+            
             gameOverUI.gameObject.SetActive(false);
+        }
+
+        private void SetLevelAsComplete(bool isCompleted)
+        {
+            _isLevelCompleted = isCompleted;
         }
 
         private void GameOver_TurnsOver()
         {
+            if(_isLevelCompleted || _levelCompete.LevelIsComplete())
+                return;
+            
+            AudioManager.Instance.StopBackgroundMusic();
+            AudioManager.Instance.PlayDefeatSound();
             gameOverUI.gameObject.SetActive(true);
             gameOverUI.DOFade(1, 2);
             Debug.Log("GameOver Turns Over");
@@ -44,6 +62,7 @@ namespace App.Scripts.GameScene.UI
 
         public void RetryGame()
         {
+            AudioManager.Instance.PlayBackgroundMusic();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
@@ -53,6 +72,8 @@ namespace App.Scripts.GameScene.UI
         }
         private void GameOver_HittingDangerObject()
         {
+            AudioManager.Instance.StopBackgroundMusic();
+            AudioManager.Instance.PlayDefeatSound();
             gameOverUI.gameObject.SetActive(true);
             gameOverUI.DOFade(1, 2);
             Debug.Log("GameOver BOOM!");

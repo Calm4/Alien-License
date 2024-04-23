@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace App.Scripts.LevelsListScene
@@ -12,10 +13,12 @@ namespace App.Scripts.LevelsListScene
         [SerializeField] private GameObject levelPrefab;
 
         private LevelsManager _levelsManager;
+        private readonly int notPlayableScenesCount = 2;
 
         private void Start()
         {
             _levelsManager = FindObjectOfType<LevelsManager>(); 
+            levelsCount = SceneManager.sceneCountInBuildSettings - notPlayableScenesCount;
             InitializeLevels();
         }
     

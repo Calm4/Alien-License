@@ -19,8 +19,14 @@ public class HelpFloorPlate : MonoBehaviour
             if (_timeInHelpZone > requiredTimeToHelp)
             {
                 // Убрать возможность двигать предмет Other если он уже забирается
+                AudioManager.Instance.StopBackgroundMusic();
+                AudioManager.Instance.PlayNLOSound();
                 other.transform.DOMove(UFO.transform.position, 2f);
-                other.transform.DOScale(0, 2f).OnComplete(() => {Destroy(other.gameObject);});
+                other.transform.DOScale(0, 2f).OnComplete(() =>
+                {
+                    Destroy(other.gameObject);
+                    AudioManager.Instance.PlayBackgroundMusic();
+                });
             }
         }
     }
