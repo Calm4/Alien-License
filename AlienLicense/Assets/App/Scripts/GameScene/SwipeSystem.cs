@@ -21,11 +21,14 @@ namespace App.Scripts.GameScene
         private bool _isGamePaused;
 
         private const float FurnitureBoxCastOffset = 0.02f;
+
+        private LevelTurnsCount _levelTurnsCount;
+        
         public event Action OnInteractWithDangerObject;
-        public event Action OnLevelSwipesOver;
 
         private void Start()
         {
+            _levelTurnsCount = FindObjectOfType<LevelTurnsCount>();
             GamePauseUI.Instance.OnGamePause += SetGamePauseState;
         }
 
@@ -43,11 +46,6 @@ namespace App.Scripts.GameScene
         {
             if (_isGamePaused)
                 return;
-
-            if (levelSwipesCount <= 0)
-            {
-                OnLevelSwipesOver?.Invoke();
-            }
 
             if (Input.touchCount <= 0 || _isMoving) return;
 
@@ -86,6 +84,7 @@ namespace App.Scripts.GameScene
             if (_selectedObject != null)
             {
                 MoveSelectedObject(direction);
+                LevelTurnsCount.Instance.ReduceTurns(1);
             }
 
             _selectedObject = null;

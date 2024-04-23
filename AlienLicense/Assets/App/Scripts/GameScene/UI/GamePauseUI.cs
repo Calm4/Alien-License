@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,9 +27,9 @@ namespace App.Scripts.GameScene.UI
         [SerializeField] private Button pauseButton;
         [SerializeField] private Button continueButton;
         [SerializeField] private Button exitButton;
-        
+        [SerializeField] private TMP_Text turnsTextField;
         private const string LevelsListSceneName = "LevelsListScene";
-    
+        
         public event Action<bool> OnGamePause;
         private bool _isGamePaused;
         
@@ -42,9 +43,16 @@ namespace App.Scripts.GameScene.UI
                 _swipeSystem.OnInteractWithDangerObject += GameOver;
             }
 
+            LevelTurnsCount.Instance.OnTurnsCountChanged += ChangeTurnsCount;
+            turnsTextField.text = LevelTurnsCount.Instance.GetRemainingTurns().ToString();
             gameObject.SetActive(true);
             gameButtonCanvasGroup.alpha = 1f;
             ShowPauseMenu(false);
+        }
+
+        private void ChangeTurnsCount(int turnsCount)
+        {
+            turnsTextField.text = turnsCount.ToString();
         }
 
         private void GameOver()

@@ -22,9 +22,18 @@ namespace App.Scripts.GameScene.UI
             _swipeSystem = FindObjectOfType<SwipeSystem>();
             if (_swipeSystem != null)
             {
-                _swipeSystem.OnInteractWithDangerObject += GameOver;
+                _swipeSystem.OnInteractWithDangerObject += GameOver_HittingDangerObject;
             }
+
+            LevelTurnsCount.Instance.OnLevelSwipesOver += GameOver_TurnsOver;
             gameOverUI.gameObject.SetActive(false);
+        }
+
+        private void GameOver_TurnsOver()
+        {
+            gameOverUI.gameObject.SetActive(true);
+            gameOverUI.DOFade(1, 2);
+            Debug.Log("GameOver Turns Over");
         }
 
         public void RetryGame()
@@ -36,18 +45,18 @@ namespace App.Scripts.GameScene.UI
         {
             SceneManager.LoadScene(LevelsListSceneName);
         }
-        private void GameOver()
+        private void GameOver_HittingDangerObject()
         {
             gameOverUI.gameObject.SetActive(true);
             gameOverUI.DOFade(1, 2);
-            Debug.Log("GameOver");
+            Debug.Log("GameOver BOOM!");
         }
 
         private void OnDestroy()
         {
             if (_swipeSystem != null)
             {
-                _swipeSystem.OnInteractWithDangerObject -= GameOver;
+                _swipeSystem.OnInteractWithDangerObject -= GameOver_HittingDangerObject;
             }
         }
     }
