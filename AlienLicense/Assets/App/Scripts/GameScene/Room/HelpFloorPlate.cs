@@ -2,7 +2,6 @@ using App.Scripts.GameScene.GameItems;
 using App.Scripts.MainMenuScene;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace App.Scripts.GameScene.Room
 {
@@ -34,7 +33,7 @@ namespace App.Scripts.GameScene.Room
         {
             helpMovableObject.IsBeingKidnapped = true;
             AudioManager.Instance.StopBackgroundMusic();
-            AudioManager.Instance.PlayNLOSound();
+            AudioManager.Instance.PlayUfoSound();
             MoveUFOAndObject(helpMovableObject);
         }
 

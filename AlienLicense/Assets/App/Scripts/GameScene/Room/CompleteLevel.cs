@@ -1,6 +1,5 @@
 using System;
 using App.Scripts.GameScene.GameItems;
-using App.Scripts.LevelsListScene;
 using App.Scripts.MainMenuScene;
 using DG.Tweening;
 using UnityEngine;

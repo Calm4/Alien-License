@@ -2,7 +2,6 @@ using System;
 using App.Scripts.MainMenuScene;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace App.Scripts.GameScene.UI

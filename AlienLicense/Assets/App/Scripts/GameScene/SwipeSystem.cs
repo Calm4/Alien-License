@@ -58,6 +58,8 @@ namespace App.Scripts.GameScene
 
         private void HandleTouchBegan(Vector2 touchPosition)
         {
+            if (Camera.main == null) return;
+            
             _startTouchPosition = touchPosition;
             Ray ray = Camera.main.ScreenPointToRay(_startTouchPosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -137,9 +139,6 @@ namespace App.Scripts.GameScene
 
                 if (closestHit.collider != null)
                 {
-                    Debug.Log("Collision detected with " + closestHit.collider.name);
-                    Debug.Log("distance to obstacle: " + closestHit.distance);
-
                     MoveObjectToClosestHit(closestHit, direction);
                 }
                 else
@@ -206,7 +205,6 @@ namespace App.Scripts.GameScene
                     _isMoving = false;
                     //play alarm clock sound
                     OnInteractWithDangerObject?.Invoke();
-                    Debug.Log("BOOM");
                 });
             }
             else

@@ -53,7 +53,7 @@ namespace App.Scripts.MainMenuScene
             sfxAudioSource.PlayOneShot(alarmClockSound);
         }
 
-        public void PlayNLOSound()
+        public void PlayUfoSound()
         {
             sfxAudioSource.PlayOneShot(ufoSound);
         }

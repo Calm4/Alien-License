@@ -33,7 +33,6 @@ namespace App.Scripts.GameScene.UI
             OnTurnsCountChanged?.Invoke(turnsCountLeft);
             if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
             {
-                Debug.Log(GetRemainingTurns());
                 StartCoroutine(DelayedLevelEnd());
             }
         }
@@ -49,7 +48,7 @@ namespace App.Scripts.GameScene.UI
         }
         public void IncreaseTurns(int count)
         {
-            // wathing rewards +turns 
+            // watching rewards +turns 
             turnsCountLeft += count;
             OnTurnsCountChanged?.Invoke(turnsCountLeft);
         }
@@ -68,7 +67,6 @@ namespace App.Scripts.GameScene.UI
         {
             if (turnsCountLeft <= 0 && !CompleteLevel.Instance.LevelIsComplete())
             {
-                Debug.Log(GetRemainingTurns());
                 OnLevelSwipesOver?.Invoke();
             }
         }
