@@ -26,9 +26,7 @@ namespace App.Scripts.GameScene.UI
 
         [SerializeField] private CanvasGroup gameWindowCanvasGroup;
         [SerializeField] private CanvasGroup gameButtonCanvasGroup;
-        [SerializeField] private Button pauseButton;
-        [SerializeField] private Button continueButton;
-        [SerializeField] private Button exitButton;
+        [SerializeField] private Button retryButton;
         [SerializeField] private Image turnsPanel;
         [SerializeField] private TMP_Text turnsTextField;
 
@@ -40,6 +38,7 @@ namespace App.Scripts.GameScene.UI
         void Start()
         {
             InitializeUI();
+            InitializeButtons();
         }
 
         private void InitializeUI()
@@ -59,6 +58,15 @@ namespace App.Scripts.GameScene.UI
             ShowPauseMenu(false);
         }
 
+        private void InitializeButtons()
+        {
+                retryButton.onClick.AddListener(() =>
+                {
+                    AudioManager.Instance.PlayBackgroundMusic();
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                });
+        }
+
         private void ChangeTurnsCountUI(int turnsCount)
         {
             turnsTextField.text = turnsCount.ToString();
@@ -73,6 +81,7 @@ namespace App.Scripts.GameScene.UI
         {
             gameButtonCanvasGroup.gameObject.SetActive(!isPaused);
             turnsPanel.gameObject.SetActive(!isPaused);
+            retryButton.gameObject.SetActive(!isPaused);
             gameWindowCanvasGroup.gameObject.SetActive(isPaused);
         }
 
