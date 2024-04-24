@@ -4,7 +4,7 @@ namespace App.Scripts.MainMenuScene
 {
     public class ClearPrefs : MonoBehaviour
     {
-        public static ClearPrefs Instance { get; private set; }
+        private static ClearPrefs Instance { get; set; }
         
         void Awake()
         {

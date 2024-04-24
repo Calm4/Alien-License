@@ -15,20 +15,16 @@ namespace App.Scripts.LevelsListScene
         [SerializeField] private Color levelNotComplete;
 
         private LevelsManager _levelsManager;
-        private const int NotPlayableScenesCount = 2;
+        private const int NumberOfNonGameScenes = 2;
         private int _levelsCount;
 
         private void Start()
         {
             _levelsManager = FindObjectOfType<LevelsManager>(); 
-            _levelsCount = SceneManager.sceneCountInBuildSettings - NotPlayableScenesCount;
-            backToMainMenu.onClick.AddListener(BackToMainMenu);
+            _levelsCount = SceneManager.sceneCountInBuildSettings - NumberOfNonGameScenes;
+            backToMainMenu.onClick.AddListener(() => LoadingScenesDirectory.Instance.LoadMainMenu());
+            
             InitializeLevels();
-        }
-
-        private void BackToMainMenu()
-        {
-            SceneManager.LoadScene("MainMenuScene");
         }
     
         private void InitializeLevels()
@@ -56,7 +52,6 @@ namespace App.Scripts.LevelsListScene
 
         private void LoadLevel(int levelNumber)
         {
-            Debug.Log("Loading level: " + levelNumber);
             _levelsManager.LoadLevel(levelNumber + 1); 
             AudioManager.Instance.PlayBackgroundMusic();
         }

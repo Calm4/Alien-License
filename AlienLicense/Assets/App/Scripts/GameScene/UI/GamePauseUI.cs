@@ -1,4 +1,5 @@
 using System;
+using App.Scripts.MainMenuScene;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,9 +19,11 @@ namespace App.Scripts.GameScene.UI
                 {
                     _instance = FindObjectOfType<GamePauseUI>();
                 }
+
                 return _instance;
             }
         }
+
         [SerializeField] private CanvasGroup gameWindowCanvasGroup;
         [SerializeField] private CanvasGroup gameButtonCanvasGroup;
         [SerializeField] private Button pauseButton;
@@ -28,13 +31,12 @@ namespace App.Scripts.GameScene.UI
         [SerializeField] private Button exitButton;
         [SerializeField] private Image turnsPanel;
         [SerializeField] private TMP_Text turnsTextField;
-        private const string LevelsListSceneName = "LevelsListScene";
-        
+
         public event Action<bool> OnGamePause;
         private bool _isGamePaused;
-        
+
         private SwipeSystem _swipeSystem;
-        
+
         void Start()
         {
             InitializeUI();
@@ -47,6 +49,7 @@ namespace App.Scripts.GameScene.UI
             {
                 _swipeSystem.OnInteractWithDangerObject += GameOver;
             }
+
             LevelTurnsCount.Instance.OnTurnsCountChanged += ChangeTurnsCountUI;
             LevelTurnsCount.Instance.OnLevelSwipesOver += GameOver;
 
@@ -55,13 +58,14 @@ namespace App.Scripts.GameScene.UI
             gameButtonCanvasGroup.alpha = 1f;
             ShowPauseMenu(false);
         }
+
         private void ChangeTurnsCountUI(int turnsCount)
         {
             turnsTextField.text = turnsCount.ToString();
         }
 
         private void GameOver()
-        { 
+        {
             gameObject.SetActive(false);
         }
 
@@ -71,9 +75,9 @@ namespace App.Scripts.GameScene.UI
             turnsPanel.gameObject.SetActive(!isPaused);
             gameWindowCanvasGroup.gameObject.SetActive(isPaused);
         }
+
         public void PauseGame()
         {
-            Debug.Log("PAUSE");
             _isGamePaused = true;
             ShowPauseMenu(_isGamePaused);
             OnGamePause?.Invoke(_isGamePaused);
@@ -81,7 +85,6 @@ namespace App.Scripts.GameScene.UI
 
         public void UnPauseGame()
         {
-            Debug.Log("UNPAUSE");
             _isGamePaused = false;
             ShowPauseMenu(_isGamePaused);
             OnGamePause?.Invoke(_isGamePaused);
@@ -89,8 +92,21 @@ namespace App.Scripts.GameScene.UI
 
         public void ExitFromLevel()
         {
-            Debug.Log("EXIT");
-            SceneManager.LoadScene(LevelsListSceneName);
+            LoadingScenesDirectory.Instance.LoadLevelsListScene();
+        }
+
+        private void OnDestroy()
+        {
+            if (_swipeSystem != null)
+            {
+                _swipeSystem.OnInteractWithDangerObject -= GameOver;
+            }
+
+            if (LevelTurnsCount.Instance)
+            {
+                LevelTurnsCount.Instance.OnTurnsCountChanged -= ChangeTurnsCountUI;
+                LevelTurnsCount.Instance.OnLevelSwipesOver -= GameOver;
+            }
         }
     }
 }

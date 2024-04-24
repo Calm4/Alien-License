@@ -652,6 +652,7 @@ MonoBehaviour:
   gameOverUI: {fileID: 1960494572723004964}
   retryButton: {fileID: 7346612069600877831}
   backButton: {fileID: 5350534350932341189}
+  gameOverShowDuration: 1.5
 --- !u!1 &7794239117341110545
 GameObject:
   m_ObjectHideFlags: 0

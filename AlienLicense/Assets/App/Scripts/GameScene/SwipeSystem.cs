@@ -10,16 +10,17 @@ namespace App.Scripts.GameScene
 {
     public class SwipeSystem : MonoBehaviour
     {
-        private Vector2 _startTouchPosition, _endTouchPosition;
-        private Vector3 _moveDirection;
         [SerializeField] private Vector3 furnitureColliderSize;
         [ShowInInspector] private GameObject _selectedObject;
-
-        private bool _isMoving;
-        private bool _isGamePaused;
+        
+        private Vector2 _startTouchPosition, _endTouchPosition;
+        private Vector3 _moveDirection;
 
         private const float FurnitureBoxCastOffset = 0.02f;
-
+        
+        private bool _isMoving;
+        private bool _isGamePaused;
+        
         public event Action OnInteractWithDangerObject;
 
         private void Start()
@@ -32,12 +33,12 @@ namespace App.Scripts.GameScene
             _isGamePaused = isGamePaused;
         }
 
-        void Update()
+        private void Update()
         {
             Swipe();
         }
 
-        void Swipe()
+        private void Swipe()
         {
             if (_isGamePaused || _isMoving || LevelTurnsCount.Instance.GetRemainingTurns() <= 0) return;
 
@@ -55,7 +56,7 @@ namespace App.Scripts.GameScene
         }
 
 
-        void HandleTouchBegan(Vector2 touchPosition)
+        private void HandleTouchBegan(Vector2 touchPosition)
         {
             _startTouchPosition = touchPosition;
             Ray ray = Camera.main.ScreenPointToRay(_startTouchPosition);
@@ -70,11 +71,22 @@ namespace App.Scripts.GameScene
             }
         }
 
-        void HandleTouchEnded(Vector2 touchPosition)
+        private void HandleTouchEnded(Vector2 touchPosition)
         {
             _endTouchPosition = touchPosition;
             Vector2 inputVector = _endTouchPosition - _startTouchPosition;
-            Vector3 direction = DetermineDirection(inputVector);
+            /*Можем двигать предметы двумя способоми:
+                1. предмет двигается по одной из заданной оси
+                2. предмет двигает во всех 4 направлениях
+                
+                Я сделал уровни со всеми четырьмя направлениями. Если потребуется 
+                переделать их под одну ось,то нужно будет установить выход напротив 
+                кровати на той оси, в сторону которой может двигаться кровать.
+            */
+            
+            //Vector3 direction = DetermineDirectionOneAxis(inputVector); // Движение объектов по одной оси
+            
+            Vector3 direction = DetermineDirectionTwoAxis(inputVector);
 
             if (_selectedObject != null)
             {
@@ -84,8 +96,23 @@ namespace App.Scripts.GameScene
 
             _selectedObject = null;
         }
+        private Vector3 DetermineDirectionOneAxis(Vector2 inputVector)
+        {
+            if (_selectedObject.TryGetComponent(out DefaultMovableObject defaultMovableObject))
+            {
+                if (defaultMovableObject.GetMovableObjectMovementAxis() == MovementAxis.Horizontal)
+                {
+                    return inputVector.x > 0 ? Vector3.right : Vector3.left;
+                }
+                if (defaultMovableObject.GetMovableObjectMovementAxis() == MovementAxis.Vertical)
+                {
+                    return inputVector.y > 0 ? Vector3.forward : Vector3.back;
+                }
+            }
 
-        Vector3 DetermineDirection(Vector2 inputVector)
+            return Vector3.zero;
+        }
+        private Vector3 DetermineDirectionTwoAxis(Vector2 inputVector)
         {
             if (Mathf.Abs(inputVector.x) > Mathf.Abs(inputVector.y))
             {
@@ -97,7 +124,7 @@ namespace App.Scripts.GameScene
             }
         }
 
-        void MoveSelectedObject(Vector3 direction)
+        private void MoveSelectedObject(Vector3 direction)
         {
             Vector3 boxSize = AdjustBoxSizeForDirection(direction);
             _isMoving = true;
@@ -126,7 +153,7 @@ namespace App.Scripts.GameScene
             }
         }
 
-        Vector3 AdjustBoxSizeForDirection(Vector3 direction)
+        private Vector3 AdjustBoxSizeForDirection(Vector3 direction)
         {
             Vector3 boxSize = furnitureColliderSize / 2;
             if (direction == Vector3.forward || direction == Vector3.back)
@@ -141,7 +168,7 @@ namespace App.Scripts.GameScene
             return boxSize;
         }
 
-        RaycastHit FindClosestHit(RaycastHit[] hits, Vector3 direction)
+        private RaycastHit FindClosestHit(RaycastHit[] hits, Vector3 direction)
         {
             float minDistance = Mathf.Infinity;
             RaycastHit closestHit = new RaycastHit();
@@ -169,7 +196,7 @@ namespace App.Scripts.GameScene
             return closestHit;
         }
 
-        void MoveObjectToClosestHit(RaycastHit closestHit, Vector3 direction)
+        private void MoveObjectToClosestHit(RaycastHit closestHit, Vector3 direction)
         {
             if (closestHit.collider.gameObject.GetComponent<DangerMovableObject>())
             {
@@ -189,7 +216,7 @@ namespace App.Scripts.GameScene
             }
         }
 
-        void MoveObject(Vector3 targetPosition, Action onComplete = null)
+        private void MoveObject(Vector3 targetPosition, Action onComplete = null)
         {
             _selectedObject.transform.DOMove(targetPosition, 1f)
                 .OnComplete(() =>

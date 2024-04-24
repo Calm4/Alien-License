@@ -2298,7 +2298,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2598745901631465812, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 2598745901631465812, guid: faffa2c1a4dfa8242b9a1083d18554f0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4150,9 +4150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b14b544f081d01747a7a416cb03aa0b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exitCollider: {fileID: 858304022}
-  kidnappingPosition: {fileID: 843053541}
   kidnappingDuration: 2
+  kidnappingPosition: {fileID: 843053541}
 --- !u!65 &858304022
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8803,7 +8802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1122783037426811122, guid: 1b01a0a78b8738047bdf503c63b65c2a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1122783037426811122, guid: 1b01a0a78b8738047bdf503c63b65c2a, type: 3}
       propertyPath: m_LocalRotation.w

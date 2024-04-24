@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace App.Scripts.LevelsListScene
+namespace App.Scripts.MainMenuScene
 {
     public class LevelsManager : MonoBehaviour
     {

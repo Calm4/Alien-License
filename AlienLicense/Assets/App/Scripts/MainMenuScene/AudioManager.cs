@@ -13,7 +13,7 @@ namespace App.Scripts.MainMenuScene
 
         [SerializeField] private AudioClip backgroundMusic; 
         [SerializeField] private AudioClip alarmClockSound; 
-        [SerializeField] private AudioClip NLOSound; 
+        [SerializeField] private AudioClip ufoSound; 
         [SerializeField] private AudioClip defeatSound; 
         [SerializeField] private AudioClip completeSound; 
 
@@ -35,7 +35,7 @@ namespace App.Scripts.MainMenuScene
 
         public void ButtonClickSound()
         {
-            sfxAudioSource.PlayOneShot(NLOSound);
+            sfxAudioSource.PlayOneShot(ufoSound);
         }
         public void PlayBackgroundMusic()
         {
@@ -55,7 +55,7 @@ namespace App.Scripts.MainMenuScene
 
         public void PlayNLOSound()
         {
-            sfxAudioSource.PlayOneShot(NLOSound);
+            sfxAudioSource.PlayOneShot(ufoSound);
         }
 
         public void PlayDefeatSound()

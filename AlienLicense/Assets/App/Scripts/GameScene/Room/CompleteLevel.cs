@@ -25,7 +25,6 @@ namespace App.Scripts.GameScene.Room
         private LevelsManager _levelsManager;
         private int _levelID;
         private const string LevelScenePrefix = "LevelScene_";
-        private const string LevelsListSceneName = "LevelsListScene";
 
 
         [SerializeField, Range(0, 5)] private float kidnappingDuration;
@@ -45,8 +44,6 @@ namespace App.Scripts.GameScene.Room
         {
             string levelName = SceneManager.GetActiveScene().name;
             string levelNumberString = levelName.Substring(LevelScenePrefix.Length);
-            
-            Debug.Log("LevelNumber: " + levelNumberString);
             
             if (Int32.TryParse(levelNumberString, out int levelID))
             {
@@ -69,10 +66,8 @@ namespace App.Scripts.GameScene.Room
         private void KidnapPlayer(Collider player)
         {
             player.transform.DOMove(kidnappingPosition.position, kidnappingDuration);
-            player.transform.DOScale(0, kidnappingDuration).OnComplete(() => LevelComplete(player));
-
-            Debug.Log("Level Complete");
-            Debug.Log(player.gameObject.name);
+            player.transform.DOScale(0, kidnappingDuration).OnComplete(
+                () => LevelComplete(player));
         }
 
         private void LevelComplete(Collider player)
@@ -84,7 +79,7 @@ namespace App.Scripts.GameScene.Room
             
             Destroy(player.gameObject);
             
-            SceneManager.LoadScene(LevelsListSceneName);
+            LoadingScenesDirectory.Instance.LoadLevelsListScene();
         }
 
         public bool LevelIsComplete()
