@@ -78,6 +78,7 @@ namespace App.Scripts.GameScene.Room
             
             Destroy(player.gameObject);
             
+            AudioManager.Instance.PlayBackgroundMusic();
             LoadingScenesDirectory.Instance.LoadLevelsListScene();
         }
 
